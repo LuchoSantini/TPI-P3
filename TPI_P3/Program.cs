@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using TPI_P3.Data;
+
 namespace TPI_P3
 {
     public class Program
@@ -12,6 +15,9 @@ namespace TPI_P3
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<TPIContext>(dbContextOptions => dbContextOptions.UseSqlite(
+    builder.Configuration["DB:ConnectionString"]));
 
             var app = builder.Build();
 
