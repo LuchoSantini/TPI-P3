@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
 
 namespace TPI_P3.Data.Entities
 {
@@ -7,14 +8,13 @@ namespace TPI_P3.Data.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string? Description { get; set; }
-        public double Price { get; set; }
+        public int ProductId { get; set; }
+        public string Name { get; set; }
         public bool Status { get; set; }
+        public decimal Price { get; set; }
+        public ICollection<Size> Sizes { get; set; }
+        public ICollection<Colour> Colours { get; set; }
 
-        public ICollection<Variant> Variants { get; set; } = new List<Variant>();
-        // creamos una list de variantes en el product porque queremos relacionar productos
-        // y variantes donde por ej: tenemos remera 1 y remera 1 tiene color blanco,negro y rojo
 
     }
 }
