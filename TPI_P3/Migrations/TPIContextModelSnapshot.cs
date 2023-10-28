@@ -74,6 +74,20 @@ namespace TPI_P3.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderId = 1,
+                            Status = true,
+                            UserId = 1
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            Status = true,
+                            UserId = 2
+                        });
                 });
 
             modelBuilder.Entity("TPI_P3.Data.Entities.Product", b =>
@@ -100,6 +114,22 @@ namespace TPI_P3.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            Name = "Producto 1",
+                            Price = 100.0m,
+                            Status = true
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            Name = "Producto 2",
+                            Price = 50.0m,
+                            Status = true
+                        });
                 });
 
             modelBuilder.Entity("TPI_P3.Data.Entities.User", b =>
@@ -127,6 +157,22 @@ namespace TPI_P3.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Status = true,
+                            UserName = "usuario1",
+                            UserType = "Cliente"
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            Status = true,
+                            UserName = "usuario2",
+                            UserType = "Cliente"
+                        });
                 });
 
             modelBuilder.Entity("Colour", b =>

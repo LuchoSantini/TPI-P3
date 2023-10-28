@@ -45,8 +45,26 @@ namespace TPI_P3.Data
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId);
 
-            modelBuilder.Entity<User>()
-                .HasKey(u => u.UserId);
+            modelBuilder.Entity<User>().HasData(
+                new User { UserId = 1, UserName = "usuario1", UserType = "Cliente", Status = true },
+                new User { UserId = 2, UserName = "usuario2", UserType = "Cliente", Status = true }
+            );
+
+
+            modelBuilder.Entity<Product>().HasData(
+                new Product { ProductId = 1, Name = "Producto 1", Price = 100.0m, Status = true },
+                new Product { ProductId = 2, Name = "Producto 2", Price = 50.0m, Status = true }
+            );
+
+
+            modelBuilder.Entity<Order>().HasData(
+                new Order { OrderId = 1, Status = true, UserId = 1 },
+                new Order { OrderId = 2, Status = true, UserId = 2 }
+            );
+
         }
+
+
+
     }
 }

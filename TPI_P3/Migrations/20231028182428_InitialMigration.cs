@@ -2,10 +2,12 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace TPI_P3.Migrations
 {
     /// <inheritdoc />
-    public partial class TestingMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -106,6 +108,33 @@ namespace TPI_P3.Migrations
                         principalTable: "Products",
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ProductId", "Name", "OrderId", "Price", "Status" },
+                values: new object[,]
+                {
+                    { 1, "Producto 1", null, 100.0m, true },
+                    { 2, "Producto 2", null, 50.0m, true }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserId", "Name", "Password", "Status", "UserName", "UserType" },
+                values: new object[,]
+                {
+                    { 1, null, null, true, "usuario1", "Cliente" },
+                    { 2, null, null, true, "usuario2", "Cliente" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Orders",
+                columns: new[] { "OrderId", "Status", "UserId" },
+                values: new object[,]
+                {
+                    { 1, true, 1 },
+                    { 2, true, 2 }
                 });
 
             migrationBuilder.CreateIndex(
