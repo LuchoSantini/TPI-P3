@@ -119,11 +119,12 @@ namespace TPI_P3.Migrations
 
             modelBuilder.Entity("TPI_P3.Data.Entities.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ColourId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("OrderId")
@@ -131,6 +132,39 @@ namespace TPI_P3.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("REAL");
+
+                    b.HasKey("ColourId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Colours");
+                });
+
+            modelBuilder.Entity("Size", b =>
+                {
+                    b.Property<int>("SizeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("SizeId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Sizes");
+                });
+
+            modelBuilder.Entity("TPI_P3.Data.Entities.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Status")
                         .HasColumnType("INTEGER");
@@ -144,23 +178,21 @@ namespace TPI_P3.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Description = "Zapatilla Nike",
-                            Price = 1700.0,
-                            Status = true
+                            OrderId = 1,
+                            Status = true,
+                            UserId = 1
                         },
                         new
                         {
-                            Id = 2,
-                            Description = "Zapatilla Adidas",
-                            Price = 1600.0,
-                            Status = true
+                            OrderId = 2,
+                            Status = true,
+                            UserId = 2
                         });
                 });
 
             modelBuilder.Entity("TPI_P3.Data.Entities.Size", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -168,7 +200,7 @@ namespace TPI_P3.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.ToTable("Products");
 
                     b.ToTable("Sizes");
 
@@ -187,7 +219,7 @@ namespace TPI_P3.Migrations
 
             modelBuilder.Entity("TPI_P3.Data.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -208,7 +240,12 @@ namespace TPI_P3.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserType")
+                        .HasColumnType("TEXT");
 
                     b.ToTable("Users");
 
@@ -271,6 +308,17 @@ namespace TPI_P3.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TPI_P3.Data.Entities.Order", b =>
+                {
+                    b.HasOne("TPI_P3.Data.Entities.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
