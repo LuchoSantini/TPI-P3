@@ -11,8 +11,8 @@ using TPI_P3.Data;
 namespace TPI_P3.Migrations
 {
     [DbContext(typeof(TPIContext))]
-    [Migration("20231102032128_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20231102123353_UpdateColour")]
+    partial class UpdateColour
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -190,7 +190,7 @@ namespace TPI_P3.Migrations
 
             modelBuilder.Entity("TPI_P3.Data.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -211,7 +211,7 @@ namespace TPI_P3.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
 
@@ -220,7 +220,7 @@ namespace TPI_P3.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            UserId = 1,
                             Name = "Seba",
                             Password = "123456",
                             Status = true,

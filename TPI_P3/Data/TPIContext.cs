@@ -25,7 +25,7 @@ namespace TPI_P3.Data
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
-                    Id = 1,
+                    UserId = 1,
                     Name = "Seba",
                     Password = "123456",
                     Status = true,
@@ -55,10 +55,7 @@ namespace TPI_P3.Data
 
                     });
 
-            modelBuilder.Entity<Product>().HasData(
-                new Product { ProductId = 1, Name = "Producto 1", Price = 100.0m, Status = true },
-                new Product { ProductId = 2, Name = "Producto 2", Price = 50.0m, Status = true }
-            );
+
 
             modelBuilder.Entity<Colour>().HasData(
                 new Colour
