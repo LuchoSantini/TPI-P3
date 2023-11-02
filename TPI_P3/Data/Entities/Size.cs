@@ -3,20 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TPI_P3.Data.Entities
 {
-    public class Order
+    public class Size
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public bool Status { get; set; } = true;
-
-        [ForeignKey("UserId")]
-        public User User { get; set; }
-        public int UserId { get; set; }
-        [ForeignKey("ProductId")]
-        public Product Product { get; set; }
-        public int ProductId { get; set; }
-
+        public string SizeName { get; set; } = string.Empty;
         public ICollection<Product> Products { get; set; } = new List<Product>();
 
     }

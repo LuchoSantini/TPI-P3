@@ -5,10 +5,12 @@ namespace TPI_P3.Data
 {
     public class TPIContext : DbContext
     {
-       // public DbSet<Order> Orders { get; set; } //lo que hagamos con LINQ sobre estos DbSets lo va a transformar en consultas SQL
-        public DbSet<Product> Products { get; set; } //Los warnings los podemos obviar porque DbContext se encarga de eso.
-        //public DbSet<User> Users { get; set; }
-        public DbSet<Variant> Variants { get; set; }
+        public DbSet<Order> Orders { get; set; } 
+        public DbSet<Product> Products { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Colour> Colours { get; set; }
+        public DbSet<Size>  Sizes { get; set; }
+
 
         public TPIContext(DbContextOptions<TPIContext> dbContextOptions) : base(dbContextOptions)
         {
@@ -19,51 +21,97 @@ namespace TPI_P3.Data
         {
             modelBuilder.Entity<User>().HasDiscriminator(u => u.UserType);
 
-            modelBuilder.Entity<Product>()
-                .ToTable("ProductTable") 
-                .HasData(
+
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    Name = "Seba",
+                    Password = "123456",
+                    Status = true,
+                    UserName = "SebaR",
+                    UserType = "Admin",
+                }
+                );
+
+            modelBuilder.Entity<Product>().HasData(
                     new Product
                     {
                         Id = 1,
                         Description = "Zapatilla Nike",
                         Price = 1700,
-                        Status = true
+                        Status = true,
+
+
+
                     },
                     new Product
                     {
                         Id = 2,
                         Description = "Zapatilla Adidas",
                         Price = 1600,
-                        Status = true
+                        Status = true,
+
+
                     });
 
 
-            modelBuilder.Entity<Variant>().HasData(
-                new Variant
+            modelBuilder.Entity<Colour>().HasData(
+                new Colour
                 {
                     Id = 1,
-                    Status = false,
-                    Colour = "AZUL",
-                    Size = "L",
+                    ColourName = "Azul"
                 },
-                new Variant
+                new Colour
                 {
                     Id = 2,
-                    Status = false,
-                    Colour = "rojo",
-                    Size = "L",
+                    ColourName = "Rojo"
                 });
 
+            modelBuilder.Entity<Size>().HasData(
+                new Size
+                {
+                    Id = 4,
+                    SizeName = "L",
+                },
+                new Size
+                {
+                    Id = 6,
+                    SizeName = "XXL",
+                }
+                );
+
+
+
+            // TABLA ENTRE PRODUCT Y SIZE
             modelBuilder.Entity<Product>()
-                .HasMany(p => p.Variants)
-                .WithOne(v => v.Product)
-                .HasForeignKey(v => v.ProductId);
+             .HasMany(s => s.Sizes)
+             .WithMany(c => c.Products)
+             .UsingEntity(j => j
+                .ToTable("SizesProducts")
+                .HasData(new[]
+                {
+                    new{SizesId=4, ProductsId=1},
+                    new{SizesId=6, ProductsId=2}
+                }
+                )
+                );
 
-            base.OnModelCreating(modelBuilder);
+            // TABLA ENTRE PRODUCT Y COLOUR
+            modelBuilder.Entity<Product>()
+                .HasMany(c => c.Colours)
+                .WithMany(p => p.Products)
+                .UsingEntity(j => j
+                    .ToTable("ColoursProducts")
+                    .HasData(new[]
+                    {
+                        new{ColoursId=1, ProductsId=2}
+                    }
+                    ));
+
+
+
         }
-
-
-
     }
-    }
+}
 

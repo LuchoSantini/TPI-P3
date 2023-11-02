@@ -10,11 +10,11 @@ namespace TPI_P3.Data.Entities
         public int Id { get; set; }
         public string? Description { get; set; }
         public double Price { get; set; }
-        public bool Status { get; set; }
+        public bool Status { get; set; } = true;
 
-        public ICollection<Variant> Variants { get; set; } = new List<Variant>();
-        // creamos una list de variantes en el product porque queremos relacionar productos
-        // y variantes donde por ej: tenemos remera 1 y remera 1 tiene color blanco,negro y rojo
+        public ICollection<Size> Sizes { get; set; } = new List<Size>();
+        public ICollection<Colour> Colours { get; set; } = new List<Colour>();
+        
 
     }
 }
