@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TPI_P3.Data;
 
@@ -10,9 +11,11 @@ using TPI_P3.Data;
 namespace TPI_P3.Migrations
 {
     [DbContext(typeof(TPIContext))]
-    partial class TPIContextModelSnapshot : ModelSnapshot
+    [Migration("20231103203640_xdd")]
+    partial class xdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.13");

@@ -2,5 +2,6 @@
 {
     public interface IProductService
     {
+        public List<Product> GetProducts();
     }
 }

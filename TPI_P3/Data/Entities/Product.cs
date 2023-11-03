@@ -1,21 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Drawing;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using TPI_P3.Data.Entities;
+using System.Text.Json.Serialization;
 
-namespace TPI_P3.Data.Entities
+public class Product
 {
-    public class Product
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string? Description { get; set; }
-        public double Price { get; set; }
-        public bool Status { get; set; } = true;
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int ProductId { get; set; }
+    public string Name { get; set; }
+    public bool Status { get; set; }
+    public decimal Price { get; set; }
 
-        public ICollection<Size> Sizes { get; set; } = new List<Size>();
-        public ICollection<Colour> Colours { get; set; } = new List<Colour>();
-        
-
-    }
+    public ICollection<ProductColour> ProductColours { get; set; } // Tabla intermedia ProductColour
+    public ICollection<ProductSize> ProductSizes { get; set; } // Tabla intermedia ProductSize
 }
