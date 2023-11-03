@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TPI_P3.Data;
+using TPI_P3.Services.Implementations;
+using TPI_P3.Services.Interfaces;
 
 namespace TPI_P3
 {
@@ -17,7 +19,11 @@ namespace TPI_P3
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<TPIContext>(dbContextOptions => dbContextOptions.UseSqlite(
-    builder.Configuration["DB:ConnectionString"]));
+            builder.Configuration["DB:ConnectionString"]));
+
+            #region servicesInyections
+            builder.Services.AddScoped<IProductService, ProductService>();
+            #endregion
 
             var app = builder.Build();
 

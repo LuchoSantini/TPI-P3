@@ -7,7 +7,7 @@
 namespace TPI_P3.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateColour : Migration
+    public partial class xdd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,26 +16,26 @@ namespace TPI_P3.Migrations
                 name: "Colours",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    ColourId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ColourName = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Colours", x => x.Id);
+                    table.PrimaryKey("PK_Colours", x => x.ColourId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Sizes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    SizeId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    SizeName = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sizes", x => x.Id);
+                    table.PrimaryKey("PK_Sizes", x => x.SizeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,30 +47,12 @@ namespace TPI_P3.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Password = table.Column<string>(type: "TEXT", nullable: true),
                     UserName = table.Column<string>(type: "TEXT", nullable: false),
-                    UserType = table.Column<string>(type: "TEXT", nullable: false),
+                    UserType = table.Column<string>(type: "TEXT", nullable: true),
                     Status = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ColoursProducts",
-                columns: table => new
-                {
-                    ColoursId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ProductsId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ColoursProducts", x => new { x.ColoursId, x.ProductsId });
-                    table.ForeignKey(
-                        name: "FK_ColoursProducts_Colours_ColoursId",
-                        column: x => x.ColoursId,
-                        principalTable: "Colours",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,16 +80,16 @@ namespace TPI_P3.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
-                    Price = table.Column<double>(type: "REAL", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
                     Status = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Price = table.Column<decimal>(type: "TEXT", nullable: false),
                     OrderId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.ProductId);
                     table.ForeignKey(
                         name: "FK_Products_Orders_OrderId",
                         column: x => x.OrderId,
@@ -116,79 +98,111 @@ namespace TPI_P3.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SizesProducts",
+                name: "ProductColours",
                 columns: table => new
                 {
-                    ProductsId = table.Column<int>(type: "INTEGER", nullable: false),
-                    SizesId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ColourId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SizesProducts", x => new { x.ProductsId, x.SizesId });
+                    table.PrimaryKey("PK_ProductColours", x => new { x.ProductId, x.ColourId });
                     table.ForeignKey(
-                        name: "FK_SizesProducts_Products_ProductsId",
-                        column: x => x.ProductsId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
+                        name: "FK_ProductColours_Colours_ColourId",
+                        column: x => x.ColourId,
+                        principalTable: "Colours",
+                        principalColumn: "ColourId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SizesProducts_Sizes_SizesId",
-                        column: x => x.SizesId,
+                        name: "FK_ProductColours_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductSizes",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    SizeId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductSizes", x => new { x.ProductId, x.SizeId });
+                    table.ForeignKey(
+                        name: "FK_ProductSizes_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductSizes_Sizes_SizeId",
+                        column: x => x.SizeId,
                         principalTable: "Sizes",
-                        principalColumn: "Id",
+                        principalColumn: "SizeId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Colours",
-                columns: new[] { "Id", "ColourName" },
+                columns: new[] { "ColourId", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Azul" },
-                    { 2, "Rojo" }
+                    { 1, "Red" },
+                    { 2, "Blue" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "Description", "OrderId", "Price", "Status" },
-                values: new object[,]
-                {
-                    { 1, "Zapatilla Nike", null, 1700.0, true },
-                    { 2, "Zapatilla Adidas", null, 1600.0, true }
-                });
+                columns: new[] { "ProductId", "Name", "OrderId", "Price", "Status" },
+                values: new object[] { 1, "Product 1", null, 1000m, true });
 
             migrationBuilder.InsertData(
                 table: "Sizes",
-                columns: new[] { "Id", "SizeName" },
+                columns: new[] { "SizeId", "Name" },
                 values: new object[,]
                 {
-                    { 4, "L" },
-                    { 6, "XXL" }
+                    { 1, "S" },
+                    { 2, "L" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "Name", "Password", "Status", "UserName", "UserType" },
-                values: new object[] { 1, "Seba", "123456", true, "SebaR", "Admin" });
-
-            migrationBuilder.InsertData(
-                table: "ColoursProducts",
-                columns: new[] { "ColoursId", "ProductsId" },
-                values: new object[] { 1, 2 });
-
-            migrationBuilder.InsertData(
-                table: "SizesProducts",
-                columns: new[] { "ProductsId", "SizesId" },
                 values: new object[,]
                 {
-                    { 1, 4 },
-                    { 2, 6 }
+                    { 1, null, null, true, "exampleUser1", null },
+                    { 2, null, null, true, "exampleUser2", null }
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_ColoursProducts_ProductsId",
-                table: "ColoursProducts",
-                column: "ProductsId");
+            migrationBuilder.InsertData(
+                table: "Orders",
+                columns: new[] { "Id", "ProductId", "Status", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 1, true, 1 },
+                    { 2, 1, true, 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductColours",
+                columns: new[] { "ColourId", "ProductId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductSizes",
+                columns: new[] { "ProductId", "SizeId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 1, 2 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ProductId",
@@ -201,29 +215,26 @@ namespace TPI_P3.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductColours_ColourId",
+                table: "ProductColours",
+                column: "ColourId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_OrderId",
                 table: "Products",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SizesProducts_SizesId",
-                table: "SizesProducts",
-                column: "SizesId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_ColoursProducts_Products_ProductsId",
-                table: "ColoursProducts",
-                column: "ProductsId",
-                principalTable: "Products",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                name: "IX_ProductSizes_SizeId",
+                table: "ProductSizes",
+                column: "SizeId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Orders_Products_ProductId",
                 table: "Orders",
                 column: "ProductId",
                 principalTable: "Products",
-                principalColumn: "Id",
+                principalColumn: "ProductId",
                 onDelete: ReferentialAction.Cascade);
         }
 
@@ -235,10 +246,10 @@ namespace TPI_P3.Migrations
                 table: "Orders");
 
             migrationBuilder.DropTable(
-                name: "ColoursProducts");
+                name: "ProductColours");
 
             migrationBuilder.DropTable(
-                name: "SizesProducts");
+                name: "ProductSizes");
 
             migrationBuilder.DropTable(
                 name: "Colours");

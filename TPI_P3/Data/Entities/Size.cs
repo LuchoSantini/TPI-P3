@@ -1,16 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using TPI_P3.Data.Entities;
 
-namespace TPI_P3.Data.Entities
+public class Size
 {
-    public class Size
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-            public int Id { get; set; }
-            public string SizeName { get; set; } = string.Empty;
-            public ICollection<Product> Products { get; set; } = new List<Product>();
-
-    }   
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int SizeId { get; set; }
+    public string Name { get; set; }
+    public ICollection<ProductSize> ProductSizes { get; set; } // Tabla intermedia ProductSize
 }
