@@ -1,12 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using TPI_P3.Data.Entities;
+using System.Text.Json.Serialization;
 
-public class Colour
+namespace TPI_P3.Data.Entities
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int ColourId { get; set; }
-    public string Name { get; set; }
-    public ICollection<ProductColour> ProductColours { get; set; } // Tabla intermedia ProductColour
+    public class Colour
+    {
+        [JsonIgnore]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public string ColourName { get; set; } = string.Empty;
+        public ICollection<Product> Products { get; set; } = new List<Product>();
+
+
+    }
+
 }

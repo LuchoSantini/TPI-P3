@@ -8,10 +8,9 @@ namespace TPI_P3.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Size> Sizes { get; set; }
         public DbSet<Colour> Colours { get; set; }
-        public DbSet<ProductSize> ProductSizes { get; set; }
-        public DbSet<ProductColour> ProductColours { get; set; }
+        public DbSet<Size> Sizes { get; set; }
+
 
         public TPIContext(DbContextOptions<TPIContext> dbContextOptions) : base(dbContextOptions)
         {
@@ -20,72 +19,108 @@ namespace TPI_P3.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Define the relationships between entities
-            modelBuilder.Entity<ProductSize>()
-                .HasKey(ps => new { ps.ProductId, ps.SizeId });
+            modelBuilder.Entity<User>().HasDiscriminator(u => u.UserType);
 
-            modelBuilder.Entity<ProductColour>()
-                .HasKey(pc => new { pc.ProductId, pc.ColourId });
-
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.User)
-                .WithMany(u => u.Orders)
-                .HasForeignKey(o => o.UserId);
-
-            modelBuilder.Entity<ProductSize>()
-                .HasOne(ps => ps.Product)
-                .WithMany(p => p.ProductSizes)
-                .HasForeignKey(ps => ps.ProductId);
-
-            modelBuilder.Entity<ProductSize>()
-                .HasOne(ps => ps.Size)
-                .WithMany(s => s.ProductSizes)
-                .HasForeignKey(ps => ps.SizeId);
-
-            modelBuilder.Entity<ProductColour>()
-                .HasOne(pc => pc.Product)
-                .WithMany(p => p.ProductColours)
-                .HasForeignKey(pc => pc.ProductId);
-
-            modelBuilder.Entity<ProductColour>()
-                .HasOne(pc => pc.Colour)
-                .WithMany(c => c.ProductColours)
-                .HasForeignKey(pc => pc.ColourId);
-
-            // Seed data for entities
-            modelBuilder.Entity<Colour>().HasData(
-                    new Colour { ColourId = 1, Name = "Red" },
-                    new Colour { ColourId = 2, Name = "Blue" }
-                );
-
-            modelBuilder.Entity<Size>().HasData(
-                new Size { SizeId = 1, Name = "S" },
-                new Size { SizeId = 2, Name = "L" }
-            );
-
-            modelBuilder.Entity<Product>().HasData(
-                new Product { ProductId = 1, Name = "Product 1", Status = true, Price = 1000 }
-            );
-
-            modelBuilder.Entity<ProductColour>().HasData(
-                new ProductColour { ProductId = 1, ColourId = 1 },
-                new ProductColour { ProductId = 1, ColourId = 2 }
-            );
-
-            modelBuilder.Entity<ProductSize>().HasData(
-                new ProductSize { ProductId = 1, SizeId = 1 },
-                new ProductSize { ProductId = 1, SizeId = 2 }
-            );
 
             modelBuilder.Entity<User>().HasData(
-                new User { UserId = 1, UserName = "exampleUser1", Status = true },
-                new User { UserId = 2, UserName = "exampleUser2", Status = true }
-            );//completar bien la data del User
+                new User
+                {
+                    UserId = 1,
+                    Name = "Seba",
+                    Password = "123456",
+                    Status = true,
+                    UserName = "SebaR",
+                    UserType = "Admin",
+                }
+                );
 
-            modelBuilder.Entity<Order>().HasData(
-                new Order { Id = 1, Status = true, UserId = 1, ProductId = 1 },
-                new Order { Id = 2, Status = true, UserId = 2, ProductId = 1 }
-            );
+            modelBuilder.Entity<Product>().HasData(
+                    new Product
+                    {
+                        Id = 1,
+                        Description = "Zapatilla Nike",
+                        Price = 1700,
+                        Status = true,
+
+
+
+                    },
+                    new Product
+                    {
+                        Id = 2,
+                        Description = "Zapatilla Adidas",
+                        Price = 1600,
+                        Status = true,
+
+
+                    });
+
+
+
+            modelBuilder.Entity<Colour>().HasData(
+                new Colour
+                {
+                    Id = 1,
+                    ColourName = "Azul"
+                },
+                new Colour
+                {
+                    Id = 2,
+                    ColourName = "Rojo"
+                });
+
+            modelBuilder.Entity<Size>().HasData(
+                new Size
+                {
+                    Id = 4,
+                    SizeName = "L",
+                },
+                new Size
+                {
+                    Id = 6,
+                    SizeName = "XXL",
+                },
+                new Size
+                {
+                    Id = 7,
+                    SizeName = "L"
+                }
+                );
+
+
+
+            // TABLA ENTRE PRODUCT Y SIZE
+            modelBuilder.Entity<Product>()
+             .HasMany(s => s.Sizes)
+             .WithMany(c => c.Products)
+             .UsingEntity(j => j
+                .ToTable("SizesProducts")
+                .HasData(new[]
+                {
+                    new{SizesId=4, ProductsId=1}, // aca se agrega la relacion de talle a producto
+                    new{SizesId=6, ProductsId=2},
+                    new{SizesId=6, ProductsId=1},
+                    new{SizesId=7, ProductsId=2},
+                }
+                ));
+
+            // TABLA ENTRE PRODUCT Y COLOUR
+            modelBuilder.Entity<Product>()
+                .HasMany(c => c.Colours)
+                .WithMany(p => p.Products)
+                .UsingEntity(j => j
+                    .ToTable("ColoursProducts")
+                    .HasData(new[]
+                    {
+                        new{ColoursId=1, ProductsId=1},
+                        new{ColoursId=2, ProductsId=2},
+                        new{ColoursId=2, ProductsId=1}
+                    }
+                    ));
+
+
+
         }
     }
 }
+

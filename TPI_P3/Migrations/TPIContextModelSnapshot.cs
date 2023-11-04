@@ -17,41 +17,45 @@ namespace TPI_P3.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.13");
 
-            modelBuilder.Entity("Colour", b =>
+            modelBuilder.Entity("ColourProduct", b =>
                 {
-                    b.Property<int>("ColourId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ColoursId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("INTEGER");
 
-                    b.HasKey("ColourId");
+                    b.HasKey("ColoursId", "ProductsId");
 
-                    b.ToTable("Colours");
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("ColoursProducts", (string)null);
 
                     b.HasData(
                         new
                         {
-                            ColourId = 1,
-                            Name = "Red"
+                            ColoursId = 1,
+                            ProductsId = 1
                         },
                         new
                         {
-                            ColourId = 2,
-                            Name = "Blue"
+                            ColoursId = 2,
+                            ProductsId = 2
+                        },
+                        new
+                        {
+                            ColoursId = 2,
+                            ProductsId = 1
                         });
                 });
 
             modelBuilder.Entity("Product", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("OrderId")
@@ -63,7 +67,7 @@ namespace TPI_P3.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
@@ -72,91 +76,113 @@ namespace TPI_P3.Migrations
                     b.HasData(
                         new
                         {
-                            ProductId = 1,
-                            Name = "Product 1",
-                            Price = 1000m,
+                            Id = 1,
+                            Description = "Zapatilla Nike",
+                            Price = 1700m,
                             Status = true
-                        });
-                });
-
-            modelBuilder.Entity("ProductColour", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ColourId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ProductId", "ColourId");
-
-                    b.HasIndex("ColourId");
-
-                    b.ToTable("ProductColours");
-
-                    b.HasData(
-                        new
-                        {
-                            ProductId = 1,
-                            ColourId = 1
                         },
                         new
                         {
-                            ProductId = 1,
-                            ColourId = 2
+                            Id = 2,
+                            Description = "Zapatilla Adidas",
+                            Price = 1600m,
+                            Status = true
                         });
                 });
 
             modelBuilder.Entity("ProductSize", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ProductsId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("SizeId")
+                    b.Property<int>("SizesId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ProductId", "SizeId");
+                    b.HasKey("ProductsId", "SizesId");
 
-                    b.HasIndex("SizeId");
+                    b.HasIndex("SizesId");
 
-                    b.ToTable("ProductSizes");
+                    b.ToTable("SizesProducts", (string)null);
 
                     b.HasData(
                         new
                         {
-                            ProductId = 1,
-                            SizeId = 1
+                            ProductsId = 1,
+                            SizesId = 4
                         },
                         new
                         {
-                            ProductId = 1,
-                            SizeId = 2
+                            ProductsId = 2,
+                            SizesId = 6
+                        },
+                        new
+                        {
+                            ProductsId = 1,
+                            SizesId = 6
+                        },
+                        new
+                        {
+                            ProductsId = 2,
+                            SizesId = 7
                         });
                 });
 
             modelBuilder.Entity("Size", b =>
                 {
-                    b.Property<int>("SizeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("SizeName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("SizeId");
+                    b.HasKey("Id");
 
                     b.ToTable("Sizes");
 
                     b.HasData(
                         new
                         {
-                            SizeId = 1,
-                            Name = "S"
+                            Id = 4,
+                            SizeName = "L"
                         },
                         new
                         {
-                            SizeId = 2,
-                            Name = "L"
+                            Id = 6,
+                            SizeName = "XXL"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            SizeName = "L"
+                        });
+                });
+
+            modelBuilder.Entity("TPI_P3.Data.Entities.Colour", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ColourName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Colours");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ColourName = "Azul"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ColourName = "Rojo"
                         });
                 });
 
@@ -182,22 +208,6 @@ namespace TPI_P3.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ProductId = 1,
-                            Status = true,
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ProductId = 1,
-                            Status = true,
-                            UserId = 2
-                        });
                 });
 
             modelBuilder.Entity("TPI_P3.Data.Entities.User", b =>
@@ -220,25 +230,40 @@ namespace TPI_P3.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserType")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
 
+                    b.HasDiscriminator<string>("UserType");
+
                     b.HasData(
                         new
                         {
                             UserId = 1,
+                            Name = "Seba",
+                            Password = "123456",
                             Status = true,
-                            UserName = "exampleUser1"
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            Status = true,
-                            UserName = "exampleUser2"
+                            UserName = "SebaR",
+                            UserType = "Admin"
                         });
+                });
+
+            modelBuilder.Entity("ColourProduct", b =>
+                {
+                    b.HasOne("TPI_P3.Data.Entities.Colour", null)
+                        .WithMany()
+                        .HasForeignKey("ColoursId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Product", b =>
@@ -248,42 +273,19 @@ namespace TPI_P3.Migrations
                         .HasForeignKey("OrderId");
                 });
 
-            modelBuilder.Entity("ProductColour", b =>
-                {
-                    b.HasOne("Colour", "Colour")
-                        .WithMany("ProductColours")
-                        .HasForeignKey("ColourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Product", "Product")
-                        .WithMany("ProductColours")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Colour");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("ProductSize", b =>
                 {
-                    b.HasOne("Product", "Product")
-                        .WithMany("ProductSizes")
-                        .HasForeignKey("ProductId")
+                    b.HasOne("Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Size", "Size")
-                        .WithMany("ProductSizes")
-                        .HasForeignKey("SizeId")
+                    b.HasOne("Size", null)
+                        .WithMany()
+                        .HasForeignKey("SizesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Size");
                 });
 
             modelBuilder.Entity("TPI_P3.Data.Entities.Order", b =>
@@ -303,23 +305,6 @@ namespace TPI_P3.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Colour", b =>
-                {
-                    b.Navigation("ProductColours");
-                });
-
-            modelBuilder.Entity("Product", b =>
-                {
-                    b.Navigation("ProductColours");
-
-                    b.Navigation("ProductSizes");
-                });
-
-            modelBuilder.Entity("Size", b =>
-                {
-                    b.Navigation("ProductSizes");
                 });
 
             modelBuilder.Entity("TPI_P3.Data.Entities.Order", b =>
