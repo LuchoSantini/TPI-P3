@@ -9,11 +9,8 @@ namespace TPI_P3.Data.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ColourId { get; set; }
+        public int Id { get; set; }
         public string ColourName { get; set; } = string.Empty;
-        
-
-
     }
 
 }

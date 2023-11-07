@@ -20,7 +20,6 @@ namespace TPI_P3.Services.Implementations
                 .Include(p => p.Colours) // incluimos que hayan colores y talles respectivos en cada producto
                 .Include(p => p.Sizes)
                 .ToList();
-
         }
 
         public Product? GetProductById(int id)
@@ -29,6 +28,20 @@ namespace TPI_P3.Services.Implementations
                 .Include(p => p.Colours)
                 .Include(p => p.Sizes)
                 .FirstOrDefault(x => x.ProductId == id);
+        }
+
+        public Product AddProduct(Product product)
+        {
+            _context.Products.Add(product);
+            _context.SaveChanges();
+            return product;
+        }
+
+        public void DeleteProduct(int productId) // Cambiar a shadow delete
+        {
+            Product productToBeRemoved = _context.Products.FirstOrDefault(p => p.ProductId == productId);
+            _context.Remove(productToBeRemoved);
+            _context.SaveChanges();
         }
     }
 }

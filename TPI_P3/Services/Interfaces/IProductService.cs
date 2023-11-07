@@ -4,5 +4,7 @@
     {
         public List<Product> GetProducts();
         public Product GetProductById(int id);
+        public Product AddProduct(Product product);
+        public void DeleteProduct(int productId);
     }
 }

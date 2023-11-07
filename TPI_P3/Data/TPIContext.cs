@@ -42,9 +42,6 @@ namespace TPI_P3.Data
                         Description = "Zapatilla Nike",
                         Price = 1700,
                         Status = true,
-
-
-
                     },
                     new Product
                     {
@@ -52,9 +49,6 @@ namespace TPI_P3.Data
                         Description = "Zapatilla Adidas",
                         Price = 1600,
                         Status = true,
-                        
-
-
                     });
 
 
@@ -62,33 +56,29 @@ namespace TPI_P3.Data
             modelBuilder.Entity<Colour>().HasData(
                 new Colour
                 {
-                    ColourId = 1,
+                    Id = 1,
                     ColourName = "Azul"
                 },
                 new Colour
                 {
-                    ColourId = 2,
+                    Id = 2,
                     ColourName = "Rojo"
                 });
 
             modelBuilder.Entity<Size>().HasData(
                 new Size
                 {
-                    SizeId = 4,
+                    Id = 1,
                     SizeName = "L",
                 },
                 new Size
                 {
-                    SizeId = 6,
-                    SizeName = "XXL",
-                },
-                new Size
-                {
-                    SizeId = 7,
-                    SizeName = "L"
+                    Id = 2,
+                    SizeName = "XL",
                 }
                 );
 
+            // Agregar clase ColourProducts para que el array no venga vacio
 
 
             // TABLA ENTRE PRODUCT Y SIZE
@@ -96,21 +86,21 @@ namespace TPI_P3.Data
              .HasMany(p => p.Sizes)
              .WithMany()
              .UsingEntity(j => j
-                .ToTable("SizesProducts")
-                );
+             .ToTable("SizesProducts")
+             );
 
             // TABLA ENTRE PRODUCT Y COLOUR
             modelBuilder.Entity<Product>()
-                .HasMany(c => c.Colours)
-                .WithMany()
-                .UsingEntity(j => j
-                    .ToTable("ColoursProducts")
-                    );
+            .HasMany(p => p.Colours)
+            .WithMany()
+            .UsingEntity(j => j
+                .ToTable("ColoursProducts")
+            );
 
             modelBuilder.Entity<OrderLine>()
-                .HasOne(ol => ol.product)
+                .HasOne(ol => ol.Product)
                 .WithMany()
-                .HasForeignKey(ol => ol.ProcuctId);
+                .HasForeignKey(ol => ol.ProductId);
 
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderLines)

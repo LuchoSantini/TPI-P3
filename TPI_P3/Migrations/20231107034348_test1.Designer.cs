@@ -10,8 +10,8 @@ using TPI_P3.Data;
 namespace TPI_P3.Migrations
 {
     [DbContext(typeof(TPIContext))]
-    [Migration("20231107001558_OrderLineRelationship")]
-    partial class OrderLineRelationship
+    [Migration("20231107034348_test1")]
+    partial class test1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,43 +85,12 @@ namespace TPI_P3.Migrations
                     b.ToTable("SizesProducts", (string)null);
                 });
 
-            modelBuilder.Entity("Size", b =>
-                {
-                    b.Property<int>("SizeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("SizeName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("SizeId");
-
-                    b.ToTable("Sizes");
-
-                    b.HasData(
-                        new
-                        {
-                            SizeId = 4,
-                            SizeName = "L"
-                        },
-                        new
-                        {
-                            SizeId = 6,
-                            SizeName = "XXL"
-                        },
-                        new
-                        {
-                            SizeId = 7,
-                            SizeName = "L"
-                        });
-                });
-
             modelBuilder.Entity("TPI_P3.Data.Entities.Colour", b =>
                 {
                     b.Property<int>("ColourId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("ColourId");
 
                     b.Property<string>("ColourName")
                         .IsRequired()
@@ -175,16 +144,44 @@ namespace TPI_P3.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ProcuctId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProcuctId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductLines");
+                });
+
+            modelBuilder.Entity("TPI_P3.Data.Entities.Size", b =>
+                {
+                    b.Property<int>("SizeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("SizeId");
+
+                    b.Property<string>("SizeName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("SizeId");
+
+                    b.ToTable("Sizes");
+
+                    b.HasData(
+                        new
+                        {
+                            SizeId = 1,
+                            SizeName = "L"
+                        },
+                        new
+                        {
+                            SizeId = 2,
+                            SizeName = "L"
+                        });
                 });
 
             modelBuilder.Entity("TPI_P3.Data.Entities.User", b =>
@@ -251,7 +248,7 @@ namespace TPI_P3.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Size", null)
+                    b.HasOne("TPI_P3.Data.Entities.Size", null)
                         .WithMany()
                         .HasForeignKey("SizesSizeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -277,13 +274,13 @@ namespace TPI_P3.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Product", "product")
+                    b.HasOne("Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProcuctId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("product");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("TPI_P3.Data.Entities.Order", b =>

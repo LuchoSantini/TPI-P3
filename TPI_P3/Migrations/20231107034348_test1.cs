@@ -7,7 +7,7 @@
 namespace TPI_P3.Migrations
 {
     /// <inheritdoc />
-    public partial class OrderLineRelationship : Migration
+    public partial class test1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -144,7 +144,7 @@ namespace TPI_P3.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ProcuctId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
                     OrderId = table.Column<int>(type: "INTEGER", nullable: false),
                     Amount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -158,8 +158,8 @@ namespace TPI_P3.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductLines_Products_ProcuctId",
-                        column: x => x.ProcuctId,
+                        name: "FK_ProductLines_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
@@ -188,9 +188,8 @@ namespace TPI_P3.Migrations
                 columns: new[] { "SizeId", "SizeName" },
                 values: new object[,]
                 {
-                    { 4, "L" },
-                    { 6, "XXL" },
-                    { 7, "L" }
+                    { 1, "L" },
+                    { 2, "L" }
                 });
 
             migrationBuilder.InsertData(
@@ -214,9 +213,9 @@ namespace TPI_P3.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductLines_ProcuctId",
+                name: "IX_ProductLines_ProductId",
                 table: "ProductLines",
-                column: "ProcuctId");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SizesProducts_SizesSizeId",
