@@ -13,11 +13,9 @@ namespace TPI_P3.Data.Entities
         [ForeignKey("UserId")]
         public User User { get; set; }
         public int UserId { get; set; }
-        [ForeignKey("ProductId")]
-        public Product Product { get; set; }
-        public int ProductId { get; set; }
 
-        public ICollection<Product> Products { get; set; } = new List<Product>();
+        public ICollection<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
+
 
     }
 }

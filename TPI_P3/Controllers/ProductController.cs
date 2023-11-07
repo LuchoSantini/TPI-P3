@@ -19,5 +19,11 @@ namespace TPI_P3.Controllers
         {
             return Ok(_productService.GetProducts());
         }
+        [HttpGet("{id}")]
+        public IActionResult GetProductsId(int id)
+        {
+            return Ok(_productService.GetProductById(id));
+        }
+
     }
 }

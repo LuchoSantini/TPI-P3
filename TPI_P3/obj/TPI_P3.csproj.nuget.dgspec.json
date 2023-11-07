@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sebar\\OneDrive\\Escritorio\\P3\\TPI-P3\\TPI_P3\\TPI_P3.csproj": {}
+    "C:\\Users\\sebar\\Desktop\\TPI-P3\\TPI_P3\\TPI_P3.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sebar\\OneDrive\\Escritorio\\P3\\TPI-P3\\TPI_P3\\TPI_P3.csproj": {
+    "C:\\Users\\sebar\\Desktop\\TPI-P3\\TPI_P3\\TPI_P3.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sebar\\OneDrive\\Escritorio\\P3\\TPI-P3\\TPI_P3\\TPI_P3.csproj",
+        "projectUniqueName": "C:\\Users\\sebar\\Desktop\\TPI-P3\\TPI_P3\\TPI_P3.csproj",
         "projectName": "TPI_P3",
-        "projectPath": "C:\\Users\\sebar\\OneDrive\\Escritorio\\P3\\TPI-P3\\TPI_P3\\TPI_P3.csproj",
+        "projectPath": "C:\\Users\\sebar\\Desktop\\TPI-P3\\TPI_P3\\TPI_P3.csproj",
         "packagesPath": "C:\\Users\\sebar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sebar\\OneDrive\\Escritorio\\P3\\TPI-P3\\TPI_P3\\obj\\",
+        "outputPath": "C:\\Users\\sebar\\Desktop\\TPI-P3\\TPI_P3\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\sebar\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -22,6 +22,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -92,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
