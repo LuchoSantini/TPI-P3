@@ -410,3 +410,7 @@ C:\Users\lucho\Desktop\TPI_Prog3\TPI-P3\TPI_P3\obj\Debug\net6.0\refint\TPI_P3.dl
 C:\Users\lucho\Desktop\TPI_Prog3\TPI-P3\TPI_P3\obj\Debug\net6.0\TPI_P3.pdb
 C:\Users\lucho\Desktop\TPI_Prog3\TPI-P3\TPI_P3\obj\Debug\net6.0\TPI_P3.genruntimeconfig.cache
 C:\Users\lucho\Desktop\TPI_Prog3\TPI-P3\TPI_P3\obj\Debug\net6.0\ref\TPI_P3.dll
+C:\Users\marti\Documents\Clases P3 - Practicas\TPI-P3\TPI_P3\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\marti\Documents\Clases P3 - Practicas\TPI-P3\TPI_P3\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\marti\Documents\Clases P3 - Practicas\TPI-P3\TPI_P3\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\marti\Documents\Clases P3 - Practicas\TPI-P3\TPI_P3\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
