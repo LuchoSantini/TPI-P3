@@ -86,7 +86,7 @@ namespace TPI_P3.Data
              .HasMany(p => p.Sizes)
              .WithMany()
              .UsingEntity(j => j
-             .ToTable("SizesProducts")
+                .ToTable("SizesProducts")
              );
 
             // TABLA ENTRE PRODUCT Y COLOUR
@@ -112,7 +112,7 @@ namespace TPI_P3.Data
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId);
 
-               
+
         }
     }
 }
