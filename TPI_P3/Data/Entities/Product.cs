@@ -11,7 +11,6 @@ public class Product
     public string? Description    { get; set; }
     public bool Status { get; set; }
     public decimal Price { get; set; }
-
     public ICollection<Colour> Colours { get; set; } = new List<Colour>();
     public ICollection<Size> Sizes { get; set; } = new List<Size>();    
 }

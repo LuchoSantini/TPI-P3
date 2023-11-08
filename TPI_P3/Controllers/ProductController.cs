@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TPI_P3.Data.ProductDto;
+using TPI_P3.Data.Dto;
 using TPI_P3.Services.Interfaces;
 
 namespace TPI_P3.Controllers
@@ -28,26 +28,34 @@ namespace TPI_P3.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddProduct([FromBody]ProductDto dto)
+        public IActionResult AddProduct([FromBody] ProductDto productDto)
         {
-            var product = new Product()
+            try
             {
-                ProductId = dto.ProductId,
-                Sizes = dto.Sizes,
-                Status = dto.Status,
-                Colours = dto.Colours,
-                Description = dto.Description,
-                Price = dto.Price,
-            };
-            return Ok(_productService.AddProduct(product));
+                var addedProduct = _productService.AddProduct(productDto);
+                return CreatedAtAction("AddProduct", new { id = addedProduct.ProductId }, addedProduct);
+            }
+            catch (ArgumentException ex)
+            {
+                // Manejar el error de validación de colores o tallas que no existen
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteProductById(int id)
         {
             _productService.DeleteProduct(id);
             return Ok();
         }
+
+        [HttpPut("UpdateProductStatus/{id}")]
+        public IActionResult UpdateProductStatusById(int id)
+        {
+            _productService.UpdateProductStatusById(id);
+            return Ok();
+        }
+
 
     }
 }

@@ -49,22 +49,6 @@ namespace TPI_P3.Migrations
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            ProductId = 1,
-                            Description = "Zapatilla Nike",
-                            Price = 1700m,
-                            Status = true
-                        },
-                        new
-                        {
-                            ProductId = 2,
-                            Description = "Zapatilla Adidas",
-                            Price = 1600m,
-                            Status = true
-                        });
                 });
 
             modelBuilder.Entity("ProductSize", b =>

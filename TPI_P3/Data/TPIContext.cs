@@ -35,24 +35,6 @@ namespace TPI_P3.Data
                 }
                 );
 
-            modelBuilder.Entity<Product>().HasData(
-                    new Product
-                    {
-                        ProductId = 1,
-                        Description = "Zapatilla Nike",
-                        Price = 1700,
-                        Status = true,
-                    },
-                    new Product
-                    {
-                        ProductId = 2,
-                        Description = "Zapatilla Adidas",
-                        Price = 1600,
-                        Status = true,
-                    });
-
-
-
             modelBuilder.Entity<Colour>().HasData(
                 new Colour
                 {
@@ -77,8 +59,6 @@ namespace TPI_P3.Data
                     SizeName = "XL",
                 }
                 );
-
-            // Agregar clase ColourProducts para que el array no venga vacio
 
 
             // TABLA ENTRE PRODUCT Y SIZE

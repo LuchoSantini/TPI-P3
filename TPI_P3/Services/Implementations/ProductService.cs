@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TPI_P3.Data;
 using TPI_P3.Data.Entities;
+using TPI_P3.Data.Dto;
 using TPI_P3.Services.Interfaces;
+using System.Drawing;
 
 namespace TPI_P3.Services.Implementations
 {
@@ -30,18 +32,62 @@ namespace TPI_P3.Services.Implementations
                 .FirstOrDefault(x => x.ProductId == id);
         }
 
-        public Product AddProduct(Product product)
+        public Product AddProduct(ProductDto productDto)
         {
+            var product = new Product
+            {
+                Description = productDto.Description,
+                Status = productDto.Status,
+                Price = productDto.Price
+            };
+
+            foreach (var colourId in productDto.ColourId)
+            {
+                var existingColour = _context.Colours.FirstOrDefault(c => c.Id == colourId);
+                if (existingColour == null)
+                {
+                    throw new ArgumentException($"El Color con el  ID: {colourId} no existe");
+                }
+                product.Colours.Add(existingColour);
+            }
+
+            foreach (var sizeId in productDto.SizeId)
+            {
+                var existingSize = _context.Sizes.FirstOrDefault(s => s.Id == sizeId);
+                if (existingSize == null)
+                {
+                    throw new ArgumentException($"El talle con el ID: {sizeId} no existe");
+                }
+                product.Sizes.Add(existingSize);
+            }
+
             _context.Products.Add(product);
             _context.SaveChanges();
+
             return product;
         }
 
         public void DeleteProduct(int productId) // Cambiar a shadow delete
+            {
+                Product productToBeRemoved = _context.Products.FirstOrDefault(p => p.ProductId == productId);
+                productToBeRemoved.Status = false;
+                _context.Update(productToBeRemoved);
+                _context.SaveChanges();
+            }
+
+        public void UpdateProductStatusById(int id)
         {
-            Product productToBeRemoved = _context.Products.FirstOrDefault(p => p.ProductId == productId);
-            _context.Remove(productToBeRemoved);
+            Product productToBeEnabled = _context.Products.FirstOrDefault(p => p.ProductId == id);
+            productToBeEnabled.Status = true;
+            _context.Update(productToBeEnabled);
             _context.SaveChanges();
         }
-    }
+
+        public void EditProductById(int id)
+        {
+            
+        }
+
+
+        }
 }
