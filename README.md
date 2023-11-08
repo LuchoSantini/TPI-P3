@@ -1,6 +1,6 @@
 # 🚀 API de Gestión de Usuarios y Productos
 
-Este proyecto es una **API** desarrollada en **.NET 6** con **Entity Framework 6** como parte del Trabajo Práctico Integrador (TPI) de Programación 3. La API proporciona funcionalidades para gestionar usuarios con roles y productos. A continuación, se presentan las principales características y una breve guía de uso.
+Este proyecto es una **API** desarrollada en **.NET 6** con **Entity Framework 6** como parte del Trabajo Práctico Integrador de Programación 3. La API proporciona funcionalidades para gestionar usuarios con roles y productos.
 
 ## 👥 Integrantes del Equipo
 - 🧑‍💼 **[Sebastian Ramirez]**
