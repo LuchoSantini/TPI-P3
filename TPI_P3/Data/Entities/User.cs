@@ -11,9 +11,9 @@ namespace TPI_P3.Data.Entities
         public string? Name { get; set; }
         public string? Password { get; set; }
 
-        [Required]
-        public string? UserName { get; set; }
-        public string? UserType { get; set; }
+        //[Required]
+        public string UserName { get; set; }
+        public string UserType { get; set; }
         public bool Status { get; set; } = true;
         public ICollection<Order> Orders { get; set; } = new List<Order>();
         

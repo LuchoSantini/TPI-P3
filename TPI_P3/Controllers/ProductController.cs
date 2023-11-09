@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TPI_P3.Data.Dto;
+using TPI_P3.Data.Models;
 using TPI_P3.Services.Interfaces;
 
 namespace TPI_P3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -15,7 +17,7 @@ namespace TPI_P3.Controllers
         {
             _productService = productService;
         }
-
+        
         [HttpGet]
         public IActionResult GetProducts()
         {

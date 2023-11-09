@@ -414,3 +414,10 @@ C:\Users\marti\Documents\Clases P3 - Practicas\TPI-P3\TPI_P3\bin\Debug\net6.0\Mi
 C:\Users\marti\Documents\Clases P3 - Practicas\TPI-P3\TPI_P3\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\marti\Documents\Clases P3 - Practicas\TPI-P3\TPI_P3\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Users\marti\Documents\Clases P3 - Practicas\TPI-P3\TPI_P3\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+C:\Users\lucho\Desktop\TPI_Prog3\TPI-P3\TPI_P3\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\lucho\Desktop\TPI_Prog3\TPI-P3\TPI_P3\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\lucho\Desktop\TPI_Prog3\TPI-P3\TPI_P3\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\lucho\Desktop\TPI_Prog3\TPI-P3\TPI_P3\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\lucho\Desktop\TPI_Prog3\TPI-P3\TPI_P3\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\lucho\Desktop\TPI_Prog3\TPI-P3\TPI_P3\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\lucho\Desktop\TPI_Prog3\TPI-P3\TPI_P3\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TPI_P3.Data;
 using TPI_P3.Data.Entities;
-using TPI_P3.Data.Dto;
 using TPI_P3.Services.Interfaces;
 using System.Drawing;
+using TPI_P3.Data.Models;
 
 namespace TPI_P3.Services.Implementations
 {

@@ -1,4 +1,4 @@
-﻿using TPI_P3.Data.Dto;
+﻿using TPI_P3.Data.Models;
 
 namespace TPI_P3.Services.Interfaces
 {

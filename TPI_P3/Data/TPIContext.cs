@@ -20,7 +20,7 @@ namespace TPI_P3.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasDiscriminator(u => u.UserType);
+            //modelBuilder.Entity<User>().HasDiscriminator(u => u.UserType);
 
 
             modelBuilder.Entity<User>().HasData(
