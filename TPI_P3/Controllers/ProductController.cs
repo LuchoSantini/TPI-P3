@@ -10,6 +10,8 @@ namespace TPI_P3.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+
+    /// VALIDAR SOLO Q USUARIOS AUTENTICADOS PUEDAN
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;

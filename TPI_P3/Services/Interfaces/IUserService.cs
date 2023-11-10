@@ -5,10 +5,11 @@ namespace TPI_P3.Services.Interfaces
 {
     public interface IUserService
     {
-        public User? GetUserByUsername(string userName);
+
         public UserResponse ValidateUser(string userName, string password);
-        public int CreateUser(User user);
+        public User CreateUser(User user);
+        public User? GetUserByUsername(string userName);
         public void UpdateUser(User user);
-        public void DeleteUser(int userId);
+
     }
 }

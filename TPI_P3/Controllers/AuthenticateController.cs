@@ -14,15 +14,17 @@ namespace TPI_P3.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
-        public IUserService _userService;
+        public IAdminService _adminService;
+        public readonly IUserService _userService;
         public IConfiguration _config;
 
-        public AuthenticateController(IUserService UserService, IConfiguration configuration)
+        public AuthenticateController(IAdminService adminService, IConfiguration configuration, IUserService userService)
         {
-            _userService = UserService;
+            _adminService = adminService;
             _config = configuration;
+            _userService = userService;
         }
-
+        // el usuario primero debe validar su usuario (userService) y luego se le retorna su token
         [HttpPost]
         public IActionResult Authenticate([FromBody] CredentialsDto credentialsDto)
         {
@@ -32,7 +34,7 @@ namespace TPI_P3.Controllers
             {
                 return BadRequest(validarUsuarioResult.Message);
             }
-            else if (validarUsuarioResult.Password == "Wrong Password")
+            else if (validarUsuarioResult.Message == "Wrong Password")
             {
                 return Unauthorized();
             }

@@ -13,10 +13,6 @@ namespace TPI_P3.Services.Implementations
             _context = context;
         }
 
-        public User? GetUserByUsername(string userName)
-        {
-            return _context.Users.SingleOrDefault(u => u.UserName == userName);
-        }
 
         public UserResponse ValidateUser(string userName, string password)
         {
@@ -43,11 +39,18 @@ namespace TPI_P3.Services.Implementations
             return response;
         }
 
-        public int CreateUser(User user)
+        public User CreateUser(User user)
         {
+
             _context.Add(user);
             _context.SaveChanges();
-            return user.UserId;
+            
+            return user;
+
+        }
+        public User? GetUserByUsername(string userName)
+        {
+            return _context.Users.SingleOrDefault(u => u.UserName == userName);
         }
 
         public void UpdateUser(User user)
@@ -56,12 +59,6 @@ namespace TPI_P3.Services.Implementations
             _context.SaveChanges();
         }
 
-        public void DeleteUser(int userId)
-        {
-            User? userToBeDeleted = _context.Users.FirstOrDefault(u => u.UserId == userId);
-            userToBeDeleted.Status = false;
-            _context.Update(userToBeDeleted);
-            _context.SaveChanges();
-        }
+        
     }
 }

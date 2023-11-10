@@ -66,6 +66,7 @@ namespace TPI_P3
             #region servicesInyections
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IAdminService, AdminService>();
             #endregion
 
             var app = builder.Build();
