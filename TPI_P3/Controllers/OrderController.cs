@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TPI_P3.Data.Models;
 using TPI_P3.Services.Interfaces;
 
@@ -7,53 +9,89 @@ namespace TPI_P3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
-        public OrderController(IOrderService orderService)
+        private readonly IUserService _userService;
+        public OrderController(IOrderService orderService, IUserService userService)
         {
             _orderService = orderService;
+            _userService = userService;
         }
 
-        [HttpGet("GetAllOrders")]
-        public IActionResult GetAllOrders()
-        {
-            return Ok(_orderService.GetAllOrders());
-        }
-
-        [HttpGet("GetOrderById/{id}")]
-        public IActionResult GetOrderById(int id)
-        {
-            return Ok(_orderService.GetOrderById(id));
-        }
-
-        [HttpPost("AddOrder")]
+        [HttpPost]
+        [Route("AddOrder")]
         public IActionResult AddOrder(OrderDto orderDto)
         {
-            if(orderDto == null)
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+
+            if (role == "Client") // ver si agregamos otro role
             {
-                return BadRequest("La solicitud no es válida.");
+                if (orderDto == null)
+                {
+                    return BadRequest("La solicitud no es válida.");
+                }
+                _orderService.AddOrder(orderDto);
+                return Ok(orderDto);
             }
-            _orderService.AddOrder(orderDto);
-            return Ok(orderDto);
+            return Forbid();
         }
 
-        [HttpPost("AddProductToOrderLine")]
+        [HttpPost]
+        [Route("AddProductToOrderLine")]
         public IActionResult AddProductToProductLine(OrderLineDto orderLineDto)
         {
-            if (orderLineDto == null)
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+            if (role == "Client" || role == "Admin")
             {
-                return BadRequest("La solicitud no es válida.");
+                if (orderLineDto == null)
+                {
+                    return BadRequest("La solicitud no es válida.");
+                }
+
+                var addedOrderLine = _orderService.AddProductToOrderLine(orderLineDto);
+
+                if (addedOrderLine == null)
+                {
+                    return NotFound("El producto no se encontró o no se pudo agregar a la línea de productos.");
+                }
+
+                return Ok(addedOrderLine);
             }
+            return Forbid();
 
-            var addedOrderLine = _orderService.AddProductToOrderLine(orderLineDto);
-
-            if (addedOrderLine == null)
-            {
-                return NotFound("El producto no se encontró o no se pudo agregar a la línea de productos.");
-            }
-
-            return Ok(addedOrderLine);
         }
+
+        [HttpGet]
+        [Route("GetAllOrders")]
+        public IActionResult GetAllOrders()
+        {
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+
+            if (role == "Client" || role == "Admin")
+            {
+                return Ok(_orderService.GetAllOrders());
+            }
+            return Forbid();
+
+        }
+
+        [HttpGet]
+        [Route("GetOrderById")]
+        public IActionResult GetOrderById(int id)
+        {
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+
+            if (role == "Client" || role == "Admin")
+            {
+                return Ok(_orderService.GetOrderById(id));
+            }
+            return Forbid();
+        }
+
+
+
+
     }
 }
