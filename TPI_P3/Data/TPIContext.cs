@@ -60,10 +60,6 @@ namespace TPI_P3.Data
                 }
                 );
 
-            
-                
-
-
             // TABLA ENTRE PRODUCT Y SIZE
             modelBuilder.Entity<Product>()
              .HasMany(p => p.Sizes)
@@ -85,8 +81,6 @@ namespace TPI_P3.Data
             .WithMany()
             .HasForeignKey(ol => ol.ProductId);
 
-
-
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderLines)
                 .WithOne()
@@ -96,8 +90,6 @@ namespace TPI_P3.Data
                 .HasOne(o => o.User)
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId);
-
-
         }
     }
 }

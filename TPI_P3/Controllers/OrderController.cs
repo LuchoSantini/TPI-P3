@@ -15,8 +15,19 @@ namespace TPI_P3.Controllers
             _orderService = orderService;
         }
 
-        [HttpPost]
-        [Route("AddOrder")]
+        [HttpGet("GetAllOrders")]
+        public IActionResult GetAllOrders()
+        {
+            return Ok(_orderService.GetAllOrders());
+        }
+
+        [HttpGet("GetOrderById/{id}")]
+        public IActionResult GetOrderById(int id)
+        {
+            return Ok(_orderService.GetOrderById(id));
+        }
+
+        [HttpPost("AddOrder")]
         public IActionResult AddOrder(OrderDto orderDto)
         {
             if(orderDto == null)
@@ -27,8 +38,7 @@ namespace TPI_P3.Controllers
             return Ok(orderDto);
         }
 
-        [HttpPost]
-        [Route("AddProductToOrderLine")]
+        [HttpPost("AddProductToOrderLine")]
         public IActionResult AddProductToProductLine(OrderLineDto orderLineDto)
         {
             if (orderLineDto == null)
@@ -45,23 +55,5 @@ namespace TPI_P3.Controllers
 
             return Ok(addedOrderLine);
         }
-
-        [HttpGet]
-        [Route("GetAllOrders")]
-        public IActionResult GetAllOrders()
-        {
-            return Ok(_orderService.GetAllOrders());
-        }
-
-        [HttpGet]
-        [Route("GetOrderById")]
-        public IActionResult GetOrderById(int id)
-        {
-            return Ok(_orderService.GetOrderById(id));
-        }
-
-
-
-
     }
 }

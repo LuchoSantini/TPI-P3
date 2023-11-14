@@ -55,9 +55,15 @@ namespace TPI_P3.Services.Implementations
         {
             return _context.Orders
                 .Include(p => p.OrderLines)
-                .ThenInclude(ol => ol.Product) // Incluye los productos relacionados con las líneas de pedido
+                .ThenInclude(ol => ol.Product)
+                    .ThenInclude(p => p.Colours) // Incluye los colores relacionados con los productos
+                .Include(p => p.OrderLines)
+                .ThenInclude(ol => ol.Product)
+                    .ThenInclude(p => p.Sizes)   // Incluye los tamaños relacionados con los productos
                 .ToList();
         }
+
+
 
         public Order? GetOrderById(int id)
         {

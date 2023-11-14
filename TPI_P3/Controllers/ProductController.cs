@@ -20,19 +20,20 @@ namespace TPI_P3.Controllers
             _productService = productService;
         }
         
-        [HttpGet]
+        [HttpGet("GetProducts")]
         public IActionResult GetProducts()
         {
             return Ok(_productService.GetProducts());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetProductsId/{id}")]
+        
         public IActionResult GetProductsId(int id)
         {
             return Ok(_productService.GetProductById(id));
         }
 
-        [HttpPost]
+        [HttpPost("AddProduct")]
         public IActionResult AddProduct([FromBody] ProductDto productDto)
         {
             try
@@ -47,14 +48,14 @@ namespace TPI_P3.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteProductById/{id}")]
         public IActionResult DeleteProductById(int id)
         {
             _productService.DeleteProduct(id);
             return Ok();
         }
 
-        [HttpPut("UpdateProductStatus/{id}")]
+        [HttpPut("UpdateProductStatusById/{id}")]
         public IActionResult UpdateProductStatusById(int id)
         {
             _productService.UpdateProductStatusById(id);

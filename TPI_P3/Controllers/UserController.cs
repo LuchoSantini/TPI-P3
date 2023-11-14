@@ -21,7 +21,7 @@ namespace TPI_P3.Controllers
             _UserService = service;
         }
 
-        [HttpPost]
+        [HttpPost("CreateUser")]
         public IActionResult CreateUser([FromBody] UserDTO user)
         {
             var newUser = new User()
@@ -35,7 +35,7 @@ namespace TPI_P3.Controllers
         }
 
         [Authorize]
-        [HttpPut]
+        [HttpPut("UpdateUser")]
         public IActionResult UpdateUser([FromBody] UserDTO dto)
         {
             User userToUpdate = new User()
