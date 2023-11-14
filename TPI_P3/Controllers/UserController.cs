@@ -31,24 +31,24 @@ namespace TPI_P3.Controllers
                 Password = user.Password,
                 UserType = "Client"
             };
-
-            return StatusCode(StatusCodes.Status201Created,_UserService.CreateUser(newUser));
+            return StatusCode(StatusCodes.Status201Created, _UserService.CreateUser(newUser));
         }
 
+        [Authorize]
         [HttpPut]
         public IActionResult UpdateUser([FromBody] UserDTO dto)
         {
-            
             User userToUpdate = new User()
             {
                 UserId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value),
-                UserName = User.Claims.FirstOrDefault(c => c.Type.Contains("username")).Value,
+                //UserName = User.Claims.FirstOrDefault(c => c.Type.Contains("username")).Value,
+                UserName = dto.UserName,
                 Name = dto.Name,
                 Password = dto.Password,
                 UserType = "Client"
             };
             _UserService.UpdateUser(userToUpdate);
-            return Ok();
+            return Ok("Usuario modificado exitosamente");
         }
     }
 }

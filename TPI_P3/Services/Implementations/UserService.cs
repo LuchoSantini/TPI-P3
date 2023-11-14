@@ -41,12 +41,9 @@ namespace TPI_P3.Services.Implementations
 
         public User CreateUser(User user)
         {
-
             _context.Add(user);
             _context.SaveChanges();
-            
             return user;
-
         }
         public User? GetUserByUsername(string userName)
         {

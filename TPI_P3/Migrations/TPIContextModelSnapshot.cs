@@ -133,7 +133,7 @@ namespace TPI_P3.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductLines");
+                    b.ToTable("OrderLines");
                 });
 
             modelBuilder.Entity("TPI_P3.Data.Entities.Size", b =>
@@ -189,8 +189,6 @@ namespace TPI_P3.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
-
-                    b.HasDiscriminator<string>("UserType");
 
                     b.HasData(
                         new

@@ -19,8 +19,11 @@ namespace TPI_P3
             builder.Services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
+
+            #region JWT Config
             builder.Services.AddSwaggerGen(setupAction =>
             {
                 setupAction.AddSecurityDefinition("TPI_P3-API-BearerAuth", new OpenApiSecurityScheme() //Esto va a permitir usar swagger con el token.
@@ -43,7 +46,7 @@ namespace TPI_P3
                     }, new List<string>()
                 }
                 });
-            });;
+            }); ;
 
             builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntenticación que tenemos que elegir después en PostMan para pasarle el token
             .AddJwtBearer(options => //Acá definimos la configuración de la autenticación. le decimos qué cosas queremos comprobar. La fecha de expiración se valida por defecto.
@@ -59,14 +62,16 @@ namespace TPI_P3
                 };
             }
         );
+            #endregion
 
             builder.Services.AddDbContext<TPIContext>(dbContextOptions => dbContextOptions.UseSqlite(
             builder.Configuration["DB:ConnectionString"]));
 
-            #region servicesInyections
+            #region Injection Services
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IAdminService, AdminService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
             #endregion
 
             var app = builder.Build();

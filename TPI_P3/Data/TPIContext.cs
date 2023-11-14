@@ -10,7 +10,7 @@ namespace TPI_P3.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Colour> Colours { get; set; }
         public DbSet<Size> Sizes { get; set; }
-        public DbSet<OrderLine> ProductLines { get; set; }
+        public DbSet<OrderLine> OrderLines { get; set; }
 
 
         public TPIContext(DbContextOptions<TPIContext> dbContextOptions) : base(dbContextOptions)
@@ -60,6 +60,9 @@ namespace TPI_P3.Data
                 }
                 );
 
+            
+                
+
 
             // TABLA ENTRE PRODUCT Y SIZE
             modelBuilder.Entity<Product>()
@@ -78,9 +81,11 @@ namespace TPI_P3.Data
             );
 
             modelBuilder.Entity<OrderLine>()
-                .HasOne(ol => ol.Product)
-                .WithMany()
-                .HasForeignKey(ol => ol.ProductId);
+            .HasOne(ol => ol.Product)
+            .WithMany()
+            .HasForeignKey(ol => ol.ProductId);
+
+
 
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderLines)
