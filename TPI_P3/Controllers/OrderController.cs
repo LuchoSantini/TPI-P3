@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using TPI_P3.Data;
+using TPI_P3.Data.Entities;
 using TPI_P3.Data.Models;
 using TPI_P3.Services.Interfaces;
 
@@ -13,27 +15,34 @@ namespace TPI_P3.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
-        private readonly IUserService _userService;
-        public OrderController(IOrderService orderService, IUserService userService)
+
+        public OrderController(IOrderService orderService)
         {
             _orderService = orderService;
-            _userService = userService;
         }
 
-        [HttpPost]
-        [Route("AddOrder")]
-        public IActionResult AddOrder(OrderDto orderDto)
+        [HttpPost("AddOrder")]
+        [Authorize]
+        public IActionResult AddOrder([FromBody] OrderDto orderDto)
         {
-            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-            if (role == "Client") // ver si agregamos otro role
+            if (role == "Client" || role == "Admin")
             {
                 if (orderDto == null)
                 {
                     return BadRequest("La solicitud no es válida.");
                 }
-                _orderService.AddOrder(orderDto);
-                return Ok(orderDto);
+                if (!int.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId))
+                //Checkeamos que el userId sea distinto de un int para parsearlo y llevarlo al service despues
+                //En caso de que falle para eso esta el !int.TryParse que devuelve el 400 generico
+                {
+                    return BadRequest("No se pudo obtener o convertir el UserId a un valor entero.");
+                }
+
+                orderDto.UserId = userId;
+                var orderToBeAdded = _orderService.AddOrder(orderDto);
+                return Ok($"Orden agregada correctamente. ID: {orderToBeAdded.Id}");
             }
             return Forbid();
         }

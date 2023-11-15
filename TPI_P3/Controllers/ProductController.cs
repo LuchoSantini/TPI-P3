@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Timers;
 using TPI_P3.Data;
 using TPI_P3.Data.Entities;
 using TPI_P3.Data.Models;
@@ -26,25 +27,31 @@ namespace TPI_P3.Controllers
             _productService = productService;
             _context = context;
         }
-        
+
         [HttpGet("GetProducts")]
         public IActionResult GetProducts() // ver si el estado del producto es false no mostrarlo
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
-            if (role == "Client" || role == "Admin" ) 
+            if (role == "Client" || role == "Admin")
             {
-                return Ok(_productService.GetProducts());
+                var productList = _productService.GetProducts().Where(p => p.Status != false).ToList();
+                return Ok(productList);
             }
             return Forbid();
         }
 
         [HttpGet("GetProductsId/{id}")]
-        
+
         public IActionResult GetProductsId(int id)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
-            if (role == "Client" || role == "Admin") 
+            if (role == "Client" || role == "Admin")
             {
+                var productToGet = _context.Products.FirstOrDefault(p => p.ProductId == id);
+                if (productToGet == null)
+                {
+                    return NotFound($"El producto de ID {id} no se ha encontrado.");
+                }
                 return Ok(_productService.GetProductById(id));
             }
             return Forbid();
@@ -54,12 +61,12 @@ namespace TPI_P3.Controllers
         public IActionResult AddProduct([FromBody] ProductDto productDto)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
-            if (role == "Client" || role == "Admin")
+            if (role == "Admin")
             {
                 foreach (var colourId in productDto.ColourId)
                 {
                     var existingColour = _context.Colours.FirstOrDefault(c => c.Id == colourId);
-                    if(existingColour == null)
+                    if (existingColour == null)
                     {
                         return BadRequest("El Id del color no existe");
                     }
@@ -74,7 +81,7 @@ namespace TPI_P3.Controllers
                 }
 
                 var addedProduct = _productService.AddProduct(productDto);
-                    return CreatedAtAction("AddProduct", new { id = addedProduct.ProductId }, addedProduct); 
+                return CreatedAtAction("AddProduct", new { id = addedProduct.ProductId }, addedProduct);
             }
             return Forbid();
         }
@@ -83,27 +90,59 @@ namespace TPI_P3.Controllers
         public IActionResult DeleteProductById(int id)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
-            if (role == "Client" || role == "Admin")
+            if (role == "Admin")
             {
+                var productToDelete = _context.Products.FirstOrDefault(p => p.ProductId == id);
+                if (productToDelete == null)
+                {
+                    return NotFound($"El producto de ID {id} no se ha encontrado.");
+                }
+
                 _productService.DeleteProduct(id);
+                return Ok($"El producto con el ID: {id} se ha eliminado correctamente");
             }
             return Forbid();
-                
-            
+
+
         }
 
         [HttpPut("UpdateProductStatusById/{id}")]
         public IActionResult UpdateProductStatusById(int id)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
-            if (role == "Client" || role == "Admin")
+            if (role == "Admin")
             {
+                var productToUpdate = _context.Products.FirstOrDefault(p => p.ProductId == id);
+                if (productToUpdate == null)
+                {
+                    return NotFound($"El producto de ID {id} no se ha encontrado.");
+                }
                 _productService.UpdateProductStatusById(id);
-                return Ok();
+
+                return Ok($"El producto con el ID: {id} se ha dado de alta nuevamente");
+
             }
             return Forbid();
         }
 
+        [HttpPut("UpdateProduct/{id}")] //Terminar de hacer el Update de productos //Precio, Color, Talle
+        public IActionResult UpdateProduct(int id)
+        {
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+            if (role == "Admin")
+            {
+                var productToUpdate = _context.Products.FirstOrDefault(p => p.ProductId == id);
+                if (productToUpdate == null)
+                {
+                    return NotFound($"El producto de ID {id} no se ha encontrado.");
+                }
+                _productService.UpdateProductStatusById(id);
+
+                return Ok($"El producto con el ID: {id} se ha dado de alta nuevamente");
+
+            }
+            return Forbid();
+        }
 
     }
 }

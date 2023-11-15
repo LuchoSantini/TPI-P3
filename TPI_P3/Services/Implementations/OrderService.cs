@@ -19,6 +19,7 @@ namespace TPI_P3.Services.Implementations
         {
             var orderToAdd = new Order
             {
+                Id = orderDto.Id,
                 UserId = orderDto.UserId,
                 Status = orderDto.Status,
             };
@@ -30,14 +31,29 @@ namespace TPI_P3.Services.Implementations
 
         public OrderLine AddProductToOrderLine(OrderLineDto orderLineDto)
         {
-            var product = _context.Products.FirstOrDefault(p => p.ProductId == orderLineDto.ProductId);
+            var product = _context.Products
+                .Include(p => p.Colours)
+                .Include(p => p.Sizes)
+                .FirstOrDefault(p => p.ProductId == orderLineDto.ProductId);
 
             if (product != null)
             {
+
+                var selectedColour = product.Colours.FirstOrDefault(c => c.Id == orderLineDto.ColourId);
+                var selectedSize = product.Sizes.FirstOrDefault(s => s.Id == orderLineDto.SizeId);
+
+                if (selectedColour == null || selectedSize == null)
+                {
+
+                    return null;
+                }
+
                 var orderLine = new OrderLine
                 {
                     Product = product,
                     ProductId = product.ProductId,
+                    ColourId = orderLineDto.ColourId,
+                    SizeId = orderLineDto.SizeId,
                     Amount = orderLineDto.Amount,
                     OrderId = orderLineDto.OrderId,
                 };
@@ -47,19 +63,20 @@ namespace TPI_P3.Services.Implementations
                 return orderLine;
             }
 
-            // Manejar si el producto no se encuentra en la base de datos
+
             return null;
         }
+
 
         public List<Order> GetAllOrders()
         {
             return _context.Orders
                 .Include(p => p.OrderLines)
                 .ThenInclude(ol => ol.Product)
-                    .ThenInclude(p => p.Colours) // Incluye los colores relacionados con los productos
+                    .ThenInclude(p => p.Colours)
                 .Include(p => p.OrderLines)
                 .ThenInclude(ol => ol.Product)
-                    .ThenInclude(p => p.Sizes)   // Incluye los tamaños relacionados con los productos
+                    .ThenInclude(p => p.Sizes)
                 .ToList();
         }
 
@@ -70,6 +87,10 @@ namespace TPI_P3.Services.Implementations
             return _context.Orders
                 .Include(p => p.OrderLines)
                 .ThenInclude(ol => ol.Product)
+                    .ThenInclude(p => p.Colours)
+                .Include(p => p.OrderLines)
+                .ThenInclude(ol => ol.Product)
+                    .ThenInclude(p => p.Sizes)
                 .FirstOrDefault(p => p.Id == id);
         }
     }
