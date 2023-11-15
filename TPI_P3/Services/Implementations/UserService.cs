@@ -56,6 +56,14 @@ namespace TPI_P3.Services.Implementations
             _context.SaveChanges();
         }
 
-        
+        public void DeleteUser(int userId)
+        {
+            User? userToBeDeleted = _context.Users.FirstOrDefault(u => u.UserId == userId);
+            userToBeDeleted.Status = false;
+            _context.Update(userToBeDeleted);
+            _context.SaveChanges();
+        }
+
+
     }
 }

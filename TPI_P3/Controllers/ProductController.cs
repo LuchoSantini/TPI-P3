@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using TPI_P3.Data;
+using TPI_P3.Data.Entities;
 using TPI_P3.Data.Models;
 using TPI_P3.Services.Implementations;
 using TPI_P3.Services.Interfaces;
@@ -13,20 +15,23 @@ namespace TPI_P3.Controllers
     [ApiController]
     [Authorize]
 
-    /// VALIDAR SOLO Q USUARIOS AUTENTICADOS PUEDAN
+
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
-        public ProductController(IProductService productService)
+        private readonly TPIContext _context;
+
+        public ProductController(IProductService productService, TPIContext context)
         {
             _productService = productService;
+            _context = context;
         }
         
         [HttpGet("GetProducts")]
-        public IActionResult GetProducts()
+        public IActionResult GetProducts() // ver si el estado del producto es false no mostrarlo
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
-            if (role == "Client" || role == "Admin") 
+            if (role == "Client" || role == "Admin" ) 
             {
                 return Ok(_productService.GetProducts());
             }
@@ -51,16 +56,25 @@ namespace TPI_P3.Controllers
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
             if (role == "Client" || role == "Admin")
             {
-                try
+                foreach (var colourId in productDto.ColourId)
                 {
-                    var addedProduct = _productService.AddProduct(productDto);
-                    return CreatedAtAction("AddProduct", new { id = addedProduct.ProductId }, addedProduct);
+                    var existingColour = _context.Colours.FirstOrDefault(c => c.Id == colourId);
+                    if(existingColour == null)
+                    {
+                        return BadRequest("El Id del color no existe");
+                    }
                 }
-                catch (ArgumentException ex)
+                foreach (var sizeId in productDto.SizeId)
                 {
-                    // Manejar el error de validación de colores o tallas que no existen
-                    return BadRequest(ex.Message);
+                    var existingSize = _context.Colours.FirstOrDefault(s => s.Id == sizeId);
+                    if (existingSize == null)
+                    {
+                        return BadRequest("El Id del talle no existe");
+                    }
                 }
+
+                var addedProduct = _productService.AddProduct(productDto);
+                    return CreatedAtAction("AddProduct", new { id = addedProduct.ProductId }, addedProduct); 
             }
             return Forbid();
         }
@@ -72,7 +86,6 @@ namespace TPI_P3.Controllers
             if (role == "Client" || role == "Admin")
             {
                 _productService.DeleteProduct(id);
-                return Ok();
             }
             return Forbid();
                 

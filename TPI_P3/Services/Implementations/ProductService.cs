@@ -67,7 +67,7 @@ namespace TPI_P3.Services.Implementations
             return product;
         }
 
-        public void DeleteProduct(int productId) // Cambiar a shadow delete
+        public void DeleteProduct(int productId)
             {
                 Product productToBeRemoved = _context.Products.FirstOrDefault(p => p.ProductId == productId);
                 productToBeRemoved.Status = false;
