@@ -7,7 +7,6 @@ namespace TPI_P3.Services.Interfaces
     {
         public OrderLine AddProductToOrderLine(OrderLineDto orderLineDto);
         public Order AddOrder(OrderDto orderDto);
-        public List<Order> GetAllOrders();
-        public Order? GetOrderById(int id);
+        public List<Order> GetAllOrders(int userId);
     }
 }

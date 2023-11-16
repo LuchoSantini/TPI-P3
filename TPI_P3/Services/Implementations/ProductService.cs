@@ -68,12 +68,12 @@ namespace TPI_P3.Services.Implementations
         }
 
         public void DeleteProduct(int productId)
-            {
-                Product productToBeRemoved = _context.Products.FirstOrDefault(p => p.ProductId == productId);
-                productToBeRemoved.Status = false;
-                _context.Update(productToBeRemoved);
-                _context.SaveChanges();
-            }
+        {
+            Product productToBeRemoved = _context.Products.FirstOrDefault(p => p.ProductId == productId);
+            productToBeRemoved.Status = false;
+            _context.Update(productToBeRemoved);
+            _context.SaveChanges();
+        }
 
         public void UpdateProductStatusById(int id)
         {
@@ -85,9 +85,11 @@ namespace TPI_P3.Services.Implementations
 
         public void EditProductById(int id)
         {
-            
+            Product productToEdit = _context.Products.FirstOrDefault(p => p.ProductId == id);
+            _context.Update(productToEdit);
+            _context.SaveChanges();
         }
 
 
-        }
+    }
 }

@@ -31,6 +31,14 @@ namespace TPI_P3.Services.Implementations
 
         public OrderLine AddProductToOrderLine(OrderLineDto orderLineDto)
         {
+            var userExists = _context.Users.Any(u => u.UserId == orderLineDto.UserId);
+            var productExists = _context.Products.Any(p => p.ProductId == orderLineDto.ProductId);
+
+            if (!userExists || !productExists)
+            {
+                return null;
+            }
+
             var product = _context.Products
                 .Include(p => p.Colours)
                 .Include(p => p.Sizes)
@@ -38,13 +46,18 @@ namespace TPI_P3.Services.Implementations
 
             if (product != null)
             {
-
                 var selectedColour = product.Colours.FirstOrDefault(c => c.Id == orderLineDto.ColourId);
                 var selectedSize = product.Sizes.FirstOrDefault(s => s.Id == orderLineDto.SizeId);
 
                 if (selectedColour == null || selectedSize == null)
                 {
+                    return null;
+                }
 
+                var order = _context.Orders.FirstOrDefault(o => o.Id == orderLineDto.OrderId && o.UserId == orderLineDto.UserId);
+
+                if (order == null)
+                {
                     return null;
                 }
 
@@ -63,14 +76,16 @@ namespace TPI_P3.Services.Implementations
                 return orderLine;
             }
 
-
             return null;
         }
 
 
-        public List<Order> GetAllOrders()
+
+
+        public List<Order> GetAllOrders(int userId)
         {
             return _context.Orders
+                .Where(o => o.UserId == userId)
                 .Include(p => p.OrderLines)
                 .ThenInclude(ol => ol.Product)
                     .ThenInclude(p => p.Colours)
@@ -80,18 +95,5 @@ namespace TPI_P3.Services.Implementations
                 .ToList();
         }
 
-
-
-        public Order? GetOrderById(int id)
-        {
-            return _context.Orders
-                .Include(p => p.OrderLines)
-                .ThenInclude(ol => ol.Product)
-                    .ThenInclude(p => p.Colours)
-                .Include(p => p.OrderLines)
-                .ThenInclude(ol => ol.Product)
-                    .ThenInclude(p => p.Sizes)
-                .FirstOrDefault(p => p.Id == id);
-        }
     }
 }

@@ -16,7 +16,6 @@ namespace TPI_P3.Controllers
     {
         private readonly IUserService _UserService;
 
-        // Un usuario puede crear, updatearse - crear,ver ordenes y productos
         public UserController(IUserService service)
         {
             _UserService = service;
@@ -52,6 +51,7 @@ namespace TPI_P3.Controllers
             return Ok("Usuario modificado exitosamente");
         }
 
+        [Authorize]
         [HttpDelete]
         public IActionResult DeletemyAccount()
         {

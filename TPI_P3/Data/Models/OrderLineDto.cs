@@ -1,4 +1,6 @@
-﻿namespace TPI_P3.Data.Models
+﻿using System.Text.Json.Serialization;
+
+namespace TPI_P3.Data.Models
 {
     public class OrderLineDto
     {
@@ -7,6 +9,8 @@
         public int Amount { get; set; }
         public int ColourId { get; set; }
         public int SizeId { get; set; }
+        [JsonIgnore]
+        public int UserId { get; set; }
 
     }
 }

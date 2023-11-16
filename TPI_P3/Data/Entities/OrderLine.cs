@@ -13,12 +13,9 @@ namespace TPI_P3.Data.Entities
         public int ProductId { get; set; }
         public int OrderId { get; set; }
         public int Amount { get; set; }
-
-        // V2 de la OrderLine => Variants aceptadas
         public int? ColourId { get; set; }
         [ForeignKey("ColourId")]
         public Colour Colour { get; set; }
-
         public int? SizeId { get; set; }
         [ForeignKey("SizeId")]
         public Size Size { get; set; }

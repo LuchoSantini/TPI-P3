@@ -15,8 +15,6 @@ namespace TPI_P3.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-
-
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -29,7 +27,7 @@ namespace TPI_P3.Controllers
         }
 
         [HttpGet("GetProducts")]
-        public IActionResult GetProducts() // ver si el estado del producto es false no mostrarlo
+        public IActionResult GetProducts()
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
             if (role == "Client" || role == "Admin")
@@ -63,20 +61,31 @@ namespace TPI_P3.Controllers
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
             if (role == "Admin")
             {
+                if (productDto.Description == "string" || string.IsNullOrEmpty(productDto.Description))
+                {
+                    return BadRequest("La descripción del producto no puede estar vacía.");
+                }
+
+                if (productDto.Price <= 0)
+                {
+                    return BadRequest("El precio del producto debe ser mayor que cero.");
+                }
+
                 foreach (var colourId in productDto.ColourId)
                 {
                     var existingColour = _context.Colours.FirstOrDefault(c => c.Id == colourId);
                     if (existingColour == null)
                     {
-                        return BadRequest("El Id del color no existe");
+                        return BadRequest($"El ID del color {colourId} no existe.");
                     }
                 }
+
                 foreach (var sizeId in productDto.SizeId)
                 {
-                    var existingSize = _context.Colours.FirstOrDefault(s => s.Id == sizeId);
+                    var existingSize = _context.Sizes.FirstOrDefault(s => s.Id == sizeId);
                     if (existingSize == null)
                     {
-                        return BadRequest("El Id del talle no existe");
+                        return BadRequest($"El ID del tamaño {sizeId} no existe.");
                     }
                 }
 
@@ -86,7 +95,8 @@ namespace TPI_P3.Controllers
             return Forbid();
         }
 
-        [HttpDelete("DeleteProductById/{id}")]
+
+        [HttpDelete("DeleteProductById/{id}")] //Dar de baja
         public IActionResult DeleteProductById(int id)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
@@ -102,11 +112,9 @@ namespace TPI_P3.Controllers
                 return Ok($"El producto con el ID: {id} se ha eliminado correctamente");
             }
             return Forbid();
-
-
         }
 
-        [HttpPut("UpdateProductStatusById/{id}")]
+        [HttpPut("UpdateProductStatusById/{id}")] //Dar de alta
         public IActionResult UpdateProductStatusById(int id)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
@@ -125,21 +133,42 @@ namespace TPI_P3.Controllers
             return Forbid();
         }
 
-        [HttpPut("UpdateProduct/{id}")] //Terminar de hacer el Update de productos //Precio, Color, Talle
-        public IActionResult UpdateProduct(int id)
+        [HttpPut("EditProductById/{id}")]
+        public IActionResult EditProductById(int id, [FromBody] ProductToEditDto productToEditDto)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+
             if (role == "Admin")
             {
-                var productToUpdate = _context.Products.FirstOrDefault(p => p.ProductId == id);
-                if (productToUpdate == null)
+                var productToEdit = _context.Products.Include(p => p.Colours).Include(p => p.Sizes).FirstOrDefault(p => p.ProductId == id);
+
+                if (productToEdit == null)
                 {
                     return NotFound($"El producto de ID {id} no se ha encontrado.");
                 }
-                _productService.UpdateProductStatusById(id);
+                //Validaciones para evitar que se actualicen por cosas por defecto
+                if (productToEditDto.Description != "string" || !string.IsNullOrEmpty(productToEdit.Description))
+                {
+                    productToEdit.Description = productToEditDto.Description;
+                }
 
-                return Ok($"El producto con el ID: {id} se ha dado de alta nuevamente");
+                if (productToEditDto.Price > 0)
+                {
+                    productToEdit.Price = productToEditDto.Price;
+                }
 
+                if (productToEditDto.ColourIds != null && productToEditDto.ColourIds.Any() && productToEditDto.ColourIds.First() != 0)
+                {
+                    productToEdit.Colours = _context.Colours.Where(c => productToEditDto.ColourIds.Contains(c.Id)).ToList();
+                }
+
+                if (productToEditDto.SizeIds != null && productToEditDto.SizeIds.Any() && productToEditDto.SizeIds.First() != 0)
+                {
+                    productToEdit.Sizes = _context.Sizes.Where(s => productToEditDto.SizeIds.Contains(s.Id)).ToList();
+                }
+
+                _context.SaveChanges();
+                return Ok($"El producto con el ID: {id} se ha actualizado correctamente.");
             }
             return Forbid();
         }
