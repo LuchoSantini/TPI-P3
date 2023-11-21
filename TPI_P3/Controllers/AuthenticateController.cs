@@ -29,7 +29,7 @@ namespace TPI_P3.Controllers
         public IActionResult Authenticate([FromBody] CredentialsDto credentialsDto)
         {
             //valido usuario
-            UserResponse validarUsuarioResult = _userService.ValidateUser(credentialsDto.UserName, credentialsDto.Password);
+            Response validarUsuarioResult = _userService.ValidateUser(credentialsDto.UserName, credentialsDto.Password);
             if (validarUsuarioResult.Message == "Wrong Username")
             {
                 return BadRequest(validarUsuarioResult.Message);

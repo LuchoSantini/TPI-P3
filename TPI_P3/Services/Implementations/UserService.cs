@@ -14,9 +14,9 @@ namespace TPI_P3.Services.Implementations
         }
 
 
-        public UserResponse ValidateUser(string userName, string password)
+        public Response ValidateUser(string userName, string password)
         {
-            UserResponse response = new UserResponse();
+            Response response = new Response();
             User? userForLogin = _context.Users.SingleOrDefault(u => u.UserName == userName);
             if (userForLogin != null)
             {
