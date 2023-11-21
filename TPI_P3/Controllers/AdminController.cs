@@ -20,7 +20,7 @@ namespace TPI_P3.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
+        [HttpGet("GetUsers")]
         [Authorize]
         public IActionResult GetUsers()
         {

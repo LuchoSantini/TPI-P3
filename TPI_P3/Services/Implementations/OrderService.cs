@@ -79,9 +79,6 @@ namespace TPI_P3.Services.Implementations
             return null;
         }
 
-
-
-
         public List<Order> GetAllOrders(int userId)
         {
             return _context.Orders
