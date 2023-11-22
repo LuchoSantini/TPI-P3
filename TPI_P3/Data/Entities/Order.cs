@@ -9,6 +9,7 @@ namespace TPI_P3.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public bool Status { get; set; } = true;
+        public decimal TotalPrice { get; set; }
 
         [ForeignKey("UserId")]
         public User User { get; set; }

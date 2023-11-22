@@ -68,8 +68,11 @@ namespace TPI_P3.Services.Implementations
                     ColourId = orderLineDto.ColourId,
                     SizeId = orderLineDto.SizeId,
                     Amount = orderLineDto.Amount,
-                    OrderId = orderLineDto.OrderId, // 
+                    OrderId = orderLineDto.OrderId,
                 };
+
+                decimal totalPriceCalculated = orderLine.Amount * product.Price;
+                order.TotalPrice += totalPriceCalculated;
 
                 _context.OrderLines.Add(orderLine);
                 _context.SaveChanges();
@@ -78,6 +81,7 @@ namespace TPI_P3.Services.Implementations
 
             return null;
         }
+
 
         public List<Order> GetAllOrders(int userId)
         {
