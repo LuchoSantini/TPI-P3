@@ -68,7 +68,7 @@ namespace TPI_P3.Services.Implementations
                     ColourId = orderLineDto.ColourId,
                     SizeId = orderLineDto.SizeId,
                     Amount = orderLineDto.Amount,
-                    OrderId = orderLineDto.OrderId,
+                    OrderId = orderLineDto.OrderId, // 
                 };
 
                 _context.OrderLines.Add(orderLine);
@@ -84,11 +84,16 @@ namespace TPI_P3.Services.Implementations
             return _context.Orders
                 .Where(o => o.UserId == userId)
                 .Include(p => p.OrderLines)
-                .ThenInclude(ol => ol.Product)
-                    .ThenInclude(p => p.Colours)
+                .ThenInclude(x => x.Colour)
                 .Include(p => p.OrderLines)
-                .ThenInclude(ol => ol.Product)
-                    .ThenInclude(p => p.Sizes)
+                .ThenInclude(s => s.Size)
+                .Include(s => s.OrderLines)
+                .ThenInclude(o => o.Product)
+
+                //    .ThenInclude(p => p.Colours)
+                //.Include(p => p.OrderLines)
+                //.ThenInclude(ol => ol.Product)
+                //    .ThenInclude(p => p.Sizes)
                 .ToList();
         }
 

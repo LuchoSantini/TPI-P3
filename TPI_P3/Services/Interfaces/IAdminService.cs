@@ -9,6 +9,7 @@ namespace TPI_P3.Services.Interfaces
         public void DeleteUser(int userId);
         public int AddColour(string colour);
         public int AddSize(string size);
-
+        public bool CheckIfSizeExists(string size);
+        public bool CheckIfColourExists(string colour);
     }
 }

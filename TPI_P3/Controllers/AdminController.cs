@@ -39,32 +39,20 @@ namespace TPI_P3.Controllers
             return Forbid();
         }
 
-        //[HttpPost("AddColour")]
-        //public IActionResult AddColourToTable(string colour)
-        //{
-        //    Response response = new Response();
-
-        //    if (response.Message == "Error al agregar el color")
-        //    {
-        //        return BadRequest("No se pudo agregar el color");
-        //    }
-        //    else if (colour == "string" || string.IsNullOrEmpty(colour))
-        //    {
-        //        return BadRequest("Por favor ingrese un color");
-        //    }
-        //    return Ok(_adminService.AddColour(colour));
-        //}
-
         [HttpPost("AddColour")]
-        public IActionResult AddColourToTable(string colour)
+        public IActionResult AddColourToTable([FromBody] string colour)
         {
-            bool exsitingColour = _context.Colours.Any(u => u.ColourName == colour);
 
             User userLogged = _userService.GetUserByUsername(User.Claims.FirstOrDefault(c => c.Type.Contains("username")).Value);
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
             if (role == "Admin" && userLogged.Status)
             {
-                if (!exsitingColour)
+                bool existingColour = _adminService.CheckIfColourExists(colour);
+                if(colour == "string" || String.IsNullOrEmpty(colour))
+                {
+                    return BadRequest("Ingrese un color");
+                }
+                if (!existingColour)
                 {
                     var colourToAdd = new Colour()
                     {
@@ -72,22 +60,26 @@ namespace TPI_P3.Controllers
                     };
                     return StatusCode(StatusCodes.Status201Created, _adminService.AddColour(colour));
                 }
-                return BadRequest("No se pudo agregar el color");
+                return BadRequest("El color ya existe");
             }
             return Forbid();
         }
 
         [HttpPost("AddSize")]
-        public IActionResult AddSizeToTable(string size)
+        public IActionResult AddSizeToTable([FromBody] string size)
         {
-            bool exsitingSize = _context.Sizes.Any(u => u.SizeName == size);
-
             User userLogged = _userService.GetUserByUsername(User.Claims.FirstOrDefault(c => c.Type.Contains("username")).Value);
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
 
             if (role == "Admin" && userLogged.Status)
             {
-                if (!exsitingSize)
+                bool existingSize = _adminService.CheckIfSizeExists(size);
+                if(size == "string" || String.IsNullOrEmpty(size))
+                {
+                    return BadRequest("Ingrese un talle");
+                }
+
+                if (!existingSize)
                 {
                     var sizeToAdd = new Size()
                     {
@@ -95,9 +87,10 @@ namespace TPI_P3.Controllers
                     };
                     return StatusCode(StatusCodes.Status201Created, _adminService.AddSize(size));
                 }
-                return BadRequest("No se pudo agregar el talle");
+
+                return BadRequest($"El talle {size} ya existe");
             }
-            return Forbid();  
+            return Forbid();
         }
     }
 }

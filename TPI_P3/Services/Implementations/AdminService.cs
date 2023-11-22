@@ -30,41 +30,46 @@ namespace TPI_P3.Services.Implementations
             _context.SaveChanges();
         }
 
+        public bool CheckIfColourExists(string colour)
+        {
+            return _context.Colours.Any(c => c.ColourName == colour);
+        }
+        public bool CheckIfSizeExists(string size)
+        {
+            return _context.Sizes.Any(s => s.SizeName == size);
+        }
+
         public int AddColour(string colour)
         {
-            //Response validateColor = new Response();
-            //validateColor.Result = _context.Colours.Any(u => u.ColourName == colour);
-            //if (validateColor.Result == false) 
-            //{
+            bool existingColour = CheckIfColourExists(colour);
+            if (!existingColour)
+            {
                 Colour colourToAdd = new Colour
                 {
                     ColourName = colour,
                 };
                 _context.Colours.Add(colourToAdd);
                 _context.SaveChanges();
-            return colourToAdd.Id;
-            //    validateColor.Message = "Color agregado";
-            //    return validateColor.Message;
-            //}
-            //validateColor.Message = "Error al agregar el color";
-            //return validateColor.Message;
+                return colourToAdd.Id;
+            }
+            return 1;
         }
-
-        //public Response ValidateColour(string colour)
-        //{
-        //    Response validateColor = new Response();
-        //    validateColor.Result = _context.Colours.Any(u => u.ColourName == colour);
-        //}
 
         public int AddSize(string size)
         {
-            Size sizeToAdd = new Size
+            bool existingSize = CheckIfSizeExists(size);
+            if (!existingSize)
             {
-                SizeName = size,
-            };
-            _context.Sizes.Add(sizeToAdd);
-            _context.SaveChanges();
-            return sizeToAdd.Id;
+                Size sizeToAdd = new Size
+                {
+                    SizeName = size,
+                };
+                _context.Sizes.Add(sizeToAdd);
+                _context.SaveChanges();
+                return sizeToAdd.Id;
+            }
+
+            return 1; 
         }
 
 
