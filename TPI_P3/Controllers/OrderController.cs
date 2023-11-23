@@ -49,7 +49,7 @@ namespace TPI_P3.Controllers
 
         [HttpPost]
         [Route("AddProductToOrderLine")]
-        public IActionResult AddProductToProductLine(OrderLineDto orderLineDto)
+        public IActionResult AddProductToProductLine([FromBody] OrderLineDto orderLineDto)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
             if (role == "Client" || role == "Admin")
@@ -80,8 +80,6 @@ namespace TPI_P3.Controllers
 
             return Forbid();
         }
-
-
 
         [HttpGet]
         [Route("GetAllOrders")]

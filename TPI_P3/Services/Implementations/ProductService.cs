@@ -61,7 +61,13 @@ namespace TPI_P3.Services.Implementations
                 product.Sizes.Add(existingSize);
             }
 
+            //var existingDescription = _context.Products.FirstOrDefault(p => p.Description == productDto.Description);
+
+            //if (productDto.Description != existingDescription.Description)
+            //{
             _context.Products.Add(product);
+            //}else
+            //throw new ArgumentException($"El producto que quieres añadir tiene la misma descripción");
             _context.SaveChanges();
 
             return product;
@@ -89,7 +95,5 @@ namespace TPI_P3.Services.Implementations
             _context.Update(productToEdit);
             _context.SaveChanges();
         }
-
-
     }
 }

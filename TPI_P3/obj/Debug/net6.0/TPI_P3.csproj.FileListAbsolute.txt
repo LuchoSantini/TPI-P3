@@ -526,3 +526,4 @@ C:\Users\lucho\OneDrive\Escritorio\TPI-P3\TPI_P3\obj\Debug\net6.0\refint\TPI_P3.
 C:\Users\lucho\OneDrive\Escritorio\TPI-P3\TPI_P3\obj\Debug\net6.0\TPI_P3.pdb
 C:\Users\lucho\OneDrive\Escritorio\TPI-P3\TPI_P3\obj\Debug\net6.0\TPI_P3.genruntimeconfig.cache
 C:\Users\lucho\OneDrive\Escritorio\TPI-P3\TPI_P3\obj\Debug\net6.0\ref\TPI_P3.dll
+C:\Users\lucho\Desktop\TPI_Prog3\TPI-P3\TPI_P3\obj\Debug\net6.0\TPI_P3.sourcelink.json

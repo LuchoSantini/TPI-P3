@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Drawing;
+using System.Globalization;
 using TPI_P3.Data;
 using TPI_P3.Data.Entities;
 using TPI_P3.Data.Models;
@@ -46,7 +47,7 @@ namespace TPI_P3.Services.Implementations
             {
                 Colour colourToAdd = new Colour
                 {
-                    ColourName = colour,
+                    ColourName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(colour.ToLower()),
                 };
                 _context.Colours.Add(colourToAdd);
                 _context.SaveChanges();
@@ -62,7 +63,7 @@ namespace TPI_P3.Services.Implementations
             {
                 Size sizeToAdd = new Size
                 {
-                    SizeName = size,
+                    SizeName = size.ToUpper(),
                 };
                 _context.Sizes.Add(sizeToAdd);
                 _context.SaveChanges();

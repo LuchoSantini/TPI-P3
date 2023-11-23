@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KeRLr++XGRxQnQC1e6QBvRXbUttWPRDTclBJ7gTJ/22xJQCOSxmz2VGOTPYkjhY2l8+rFIZHxQWX33gxbpnYgA==",
+  "dgSpecHash": "ndonFh1c9yxdGbWCr+uYs4tohgtrTxg9AHEIqrnqe9DEFD6wDA1/zFfsmKTrFpliHrw/jV4MLugktQb/xU4MoQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\lucho\\OneDrive\\Escritorio\\TPI-P3\\TPI_P3\\TPI_P3.csproj",
+  "projectFilePath": "C:\\Users\\lucho\\Desktop\\TPI_Prog3\\TPI-P3\\TPI_P3\\TPI_P3.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lucho\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\lucho\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.24\\microsoft.aspnetcore.authentication.jwtbearer.6.0.24.nupkg.sha512",

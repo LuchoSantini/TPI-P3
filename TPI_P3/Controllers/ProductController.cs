@@ -39,7 +39,6 @@ namespace TPI_P3.Controllers
         }
 
         [HttpGet("GetProductsId/{id}")]
-
         public IActionResult GetProductsId(int id)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
@@ -59,6 +58,8 @@ namespace TPI_P3.Controllers
         public IActionResult AddProduct([FromBody] ProductDto productDto)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+            var existingDescription = _context.Products.FirstOrDefault(p => p.Description == productDto.Description);
+
             if (role == "Admin")
             {
                 if (productDto.Description == "string" || string.IsNullOrEmpty(productDto.Description))
@@ -87,6 +88,11 @@ namespace TPI_P3.Controllers
                     {
                         return BadRequest($"El ID del tamaño {sizeId} no existe.");
                     }
+                }
+
+                if (existingDescription?.Description == productDto.Description )
+                {
+                    return BadRequest("Ya existe un producto con esta descripción.");
                 }
 
                 var addedProduct = _productService.AddProduct(productDto);
